@@ -352,6 +352,11 @@ async def decode_external_jwt(token: str, auth_settings: AuthSettings) -> dict[s
     ``EXTERNAL_AUTH_ISSUER`` is verified when set. ``exp`` is required and
     verified on both paths (a token that omits it is rejected); ``nbf`` is
     verified when present.
+
+    WorkOS and some other OIDC providers issue ID tokens with ``client_id``
+    instead of the standard ``aud`` claim. When the token lacks ``aud`` but
+    contains ``client_id``, the function verifies ``client_id`` against the
+    configured ``EXTERNAL_AUTH_AUDIENCE`` as a fallback.
     """
     if not auth_settings.EXTERNAL_AUTH_ENABLED:
         msg = "External authentication is not enabled"
@@ -406,14 +411,41 @@ async def decode_external_jwt(token: str, auth_settings: AuthSettings) -> dict[s
         issuer = auth_settings.EXTERNAL_AUTH_ISSUER or None
         algorithms = _split_csv(auth_settings.EXTERNAL_AUTH_ALGORITHMS) or ["RS256"]
 
+        # WorkOS and some OIDC providers issue ID tokens with client_id instead of aud.
+        # Peek at the unverified payload to determine which claim to verify against.
+        unverified_claims = jwt.decode(token, options={"verify_signature": False})
+        token_has_aud = "aud" in unverified_claims
+        token_client_id = unverified_claims.get("client_id")
+
+        if token_has_aud:
+            # Standard JWT audience verification via PyJWT
+            verify_aud = True
+            decode_audience = audience
+        elif token_client_id is not None:
+            # WorkOS-style ID token: verify client_id against configured audience manually
+            if token_client_id not in audience:
+                msg = (
+                    f"External credential client_id does not match expected audience. "
+                    f"Token client_id: {token_client_id}, expected: {audience}"
+                )
+                raise AuthInvalidTokenError(msg)
+            # client_id matches; skip PyJWT's aud verification (token has no aud claim)
+            verify_aud = False
+            decode_audience = None
+            logger.debug("External JWT uses client_id instead of aud; audience verified manually")
+        else:
+            # No aud and no client_id — let PyJWT reject it with verify_aud=True
+            verify_aud = True
+            decode_audience = audience
+
         return jwt.decode(
             token,
             signing_key,
             algorithms=algorithms,
-            audience=audience,
+            audience=decode_audience,
             issuer=issuer,
             options={
-                "verify_aud": True,
+                "verify_aud": verify_aud,
                 "verify_iss": bool(issuer),
                 # PyJWT only rejects an *expired* exp; a token that omits exp
                 # otherwise passes and never expires. require=["exp"] forces the

@@ -165,6 +165,7 @@ def _jwks_settings(tmp_path) -> AuthSettings:
         EXTERNAL_AUTH_JWKS_URL=_JWKS_URL,
         EXTERNAL_AUTH_ALGORITHMS="HS256",
         EXTERNAL_AUTH_AUDIENCE=_JWKS_AUDIENCE,
+        EXTERNAL_AUTH_ISSUER=None,  # Override env var to ensure test isolation
     )
 
 
@@ -306,6 +307,70 @@ async def test_jwks_refresh_is_rate_limited_for_unknown_kid(tmp_path, monkeypatc
         await decode_external_jwt(token, settings)
 
     assert calls == []
+
+
+# ---------------------------------------------------------------------------
+# decode_external_jwt (JWKS path - client_id fallback for WorkOS-style tokens)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.anyio
+async def test_jwks_decode_accepts_client_id_when_aud_absent(tmp_path, monkeypatch):
+    """WorkOS-style tokens with client_id instead of aud should verify when client_id matches audience."""
+    settings = _jwks_settings(tmp_path)
+    monkeypatch.setattr(external, "_jwks_cache", {})
+    _install_fake_jwks_endpoint(monkeypatch, [{"keys": [_symmetric_jwk(_TEST_JWT_SECRET, kid="key-1")]}])
+
+    # Token has client_id but no aud claim (WorkOS-style ID token)
+    valid_exp = datetime.now(timezone.utc) + timedelta(minutes=5)
+    token = jwt.encode(
+        {"sub": "user-workos-123", "client_id": _JWKS_AUDIENCE, "exp": valid_exp},
+        _TEST_JWT_SECRET,
+        algorithm="HS256",
+        headers={"kid": "key-1"},
+    )
+    claims = await decode_external_jwt(token, settings)
+    assert claims["sub"] == "user-workos-123"
+    assert claims["client_id"] == _JWKS_AUDIENCE
+
+
+@pytest.mark.anyio
+async def test_jwks_decode_rejects_client_id_mismatch(tmp_path, monkeypatch):
+    """Token with client_id that doesn't match expected audience should be rejected."""
+    settings = _jwks_settings(tmp_path)
+    monkeypatch.setattr(external, "_jwks_cache", {})
+    _install_fake_jwks_endpoint(monkeypatch, [{"keys": [_symmetric_jwk(_TEST_JWT_SECRET, kid="key-1")]}])
+
+    # Token has wrong client_id
+    valid_exp = datetime.now(timezone.utc) + timedelta(minutes=5)
+    token = jwt.encode(
+        {"sub": "user-workos-123", "client_id": "wrong-client-id", "exp": valid_exp},
+        _TEST_JWT_SECRET,
+        algorithm="HS256",
+        headers={"kid": "key-1"},
+    )
+    with pytest.raises(InvalidTokenError, match="client_id does not match"):
+        await decode_external_jwt(token, settings)
+
+
+@pytest.mark.anyio
+async def test_jwks_decode_prefers_aud_over_client_id(tmp_path, monkeypatch):
+    """When token has both aud and client_id, standard aud verification takes precedence."""
+    settings = _jwks_settings(tmp_path)
+    monkeypatch.setattr(external, "_jwks_cache", {})
+    _install_fake_jwks_endpoint(monkeypatch, [{"keys": [_symmetric_jwk(_TEST_JWT_SECRET, kid="key-1")]}])
+
+    # Token has both aud and client_id - aud should be verified, client_id ignored
+    valid_exp = datetime.now(timezone.utc) + timedelta(minutes=5)
+    token = jwt.encode(
+        {"sub": "user-123", "aud": _JWKS_AUDIENCE, "client_id": "different-client", "exp": valid_exp},
+        _TEST_JWT_SECRET,
+        algorithm="HS256",
+        headers={"kid": "key-1"},
+    )
+    claims = await decode_external_jwt(token, settings)
+    assert claims["sub"] == "user-123"
+    assert claims["aud"] == _JWKS_AUDIENCE
 
 
 # ---------------------------------------------------------------------------
