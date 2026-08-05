@@ -11,7 +11,7 @@
  * degrades to `null` (default) rather than a bogus budget.
  */
 
-const STORAGE_KEY = "langflow-assistant-iterations-limit";
+const STORAGE_KEY = "intugle-assistant-iterations-limit";
 export const MAX_ITERATIONS_LIMIT = 200;
 export const DEFAULT_ITERATIONS_LIMIT = 30;
 

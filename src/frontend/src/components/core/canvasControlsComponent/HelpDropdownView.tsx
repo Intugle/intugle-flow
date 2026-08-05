@@ -6,7 +6,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
 import DropdownControlButton from "./DropdownControlButton";
 
 export type HelpDropdownViewProps = {
@@ -68,21 +67,24 @@ export const HelpDropdownView = ({
           label={t("help.shortcuts")}
           onClick={() => navigateTo("/settings/shortcuts")}
         />
-        <DropdownControlButton
-          iconName="bug"
-          testId="canvas_controls_dropdown_report_a_bug"
-          externalLink
-          label={t("help.reportBug")}
-          onClick={() => openLink(urls.bugReport)}
-        />
-        <Separator />
-        <DropdownControlButton
-          iconName="download"
-          testId="canvas_controls_dropdown_get_langflow_desktop"
-          label={t("help.getLangflowDesktop")}
-          externalLink
-          onClick={() => openLink(urls.desktop)}
-        />
+        {urls.bugReport && (
+          <DropdownControlButton
+            iconName="bug"
+            testId="canvas_controls_dropdown_report_a_bug"
+            externalLink
+            label={t("help.reportBug")}
+            onClick={() => openLink(urls.bugReport)}
+          />
+        )}
+        {urls.desktop && (
+          <DropdownControlButton
+            iconName="download"
+            testId="canvas_controls_dropdown_get_intugle_desktop"
+            label={t("help.getIntugleFlowDesktop")}
+            externalLink
+            onClick={() => openLink(urls.desktop)}
+          />
+        )}
         <DropdownControlButton
           iconName={!helperLineEnabled ? "UnfoldHorizontal" : "FoldHorizontal"}
           testId="canvas_controls_dropdown_enable_smart_guides"

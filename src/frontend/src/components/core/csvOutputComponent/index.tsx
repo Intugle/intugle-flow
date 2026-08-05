@@ -35,7 +35,7 @@ function CsvOutputComponent({
           {t("output.csvTitle")}
         </div>
         <div className="align-center flex w-full justify-center">
-          <div className="langflow-chat-desc align-center flex justify-center px-6 py-8">
+          <div className="intugle-chat-desc align-center flex justify-center px-6 py-8">
             <div className="intugle-chat-desc-span">
               {t("output.csvError")}
             </div>
@@ -88,7 +88,7 @@ function CsvOutputComponent({
             {t("output.csvTitle")}
           </div>
           <div className="align-center flex w-full justify-center">
-            <div className="langflow-chat-desc align-center flex justify-center px-6 py-8">
+            <div className="intugle-chat-desc align-center flex justify-center px-6 py-8">
               <div className="intugle-chat-desc-span">
                 {t("output.csvNoData")}
               </div>
@@ -103,7 +103,7 @@ function CsvOutputComponent({
             {t("output.csvTitle")}
           </div>
           <div className="align-center flex w-full justify-center">
-            <div className="langflow-chat-desc align-center flex justify-center px-6 py-8">
+            <div className="intugle-chat-desc align-center flex justify-center px-6 py-8">
               <div className="intugle-chat-desc-span">
                 {t("output.csvError")}
               </div>

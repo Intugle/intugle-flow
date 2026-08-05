@@ -7,7 +7,7 @@ import LoginPage from "../index";
 
 const mockLoginMutate = jest.fn();
 
-jest.mock("@/assets/LangflowLogo.svg?react", () => ({
+jest.mock("@/assets/IntugleIcon.svg?react", () => ({
   __esModule: true,
   default: (props: React.SVGProps<SVGSVGElement>) => <svg {...props} />,
 }));

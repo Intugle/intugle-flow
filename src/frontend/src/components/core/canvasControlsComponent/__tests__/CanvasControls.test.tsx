@@ -139,11 +139,11 @@ describe("CanvasControls", () => {
     render(<CanvasControls selectedNode={null} />);
 
     expect(screen.getByText("New")).toBeInTheDocument();
-    expect(screen.getByAltText("Langflow Assistant")).toBeInTheDocument();
+    expect(screen.getByAltText("Intugle Flow Assistant")).toBeInTheDocument();
   });
 
   it("should_hide_new_badge_when_assistant_already_discovered", () => {
-    localStorage.setItem("langflow-assistant-discovered", "true");
+    localStorage.setItem("intugle-assistant-discovered", "true");
     try {
       render(<CanvasControls selectedNode={null} />);
 

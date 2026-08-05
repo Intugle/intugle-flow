@@ -14,7 +14,7 @@
  * surface; nothing user-visible breaks.
  */
 
-const ASSISTANT_DISCOVERED_STORAGE_KEY = "langflow-assistant-discovered";
+const ASSISTANT_DISCOVERED_STORAGE_KEY = "intugle-assistant-discovered";
 
 export function readAssistantDiscovered(): boolean {
   try {

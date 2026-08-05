@@ -305,8 +305,10 @@ export default function IOModal({
   const showPublishOptions = playgroundPage && ENABLE_PUBLISH;
 
   const LangflowButtonClick = () => {
+    const target = LangflowButtonRedirectTarget();
+    if (!target) return;
     track("LangflowButtonClick");
-    customOpenNewTab(LangflowButtonRedirectTarget());
+    customOpenNewTab(target);
   };
 
   const swatchIndex =
@@ -435,7 +437,7 @@ export default function IOModal({
                     >
                       <IntugleLogo />
                       <div className="text-sm">
-                        {t("modal.io.builtWithLangflow")}
+                        {t("modal.io.builtWithIntugleFlow")}
                       </div>
                     </Button>
                   </div>
@@ -447,7 +449,7 @@ export default function IOModal({
                 <ShadTooltip
                   styleClasses="z-50"
                   side="right"
-                  content={t("modal.io.builtWithLangflowTooltip")}
+                  content={t("modal.io.builtWithIntugleFlowTooltip")}
                 >
                   <Button
                     variant="primary"

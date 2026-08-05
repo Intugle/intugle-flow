@@ -1,6 +1,6 @@
 import { readSkipAll, writeSkipAll } from "../skip-all-storage";
 
-const STORAGE_KEY = "langflow-assistant-skip-all";
+const STORAGE_KEY = "intugle-assistant-skip-all";
 
 describe("skip-all storage", () => {
   beforeEach(() => {

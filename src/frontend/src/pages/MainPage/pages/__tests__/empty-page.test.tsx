@@ -28,8 +28,10 @@ jest.mock(
   }),
 );
 
-jest.mock("@/assets/logo_dark.png", () => "logo_dark.png");
-jest.mock("@/assets/logo_light.png", () => "logo_light.png");
+jest.mock("@/assets/IntugleLogo.svg?react", () => ({
+  __esModule: true,
+  default: (props: React.SVGProps<SVGSVGElement>) => <svg {...props} />,
+}));
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),

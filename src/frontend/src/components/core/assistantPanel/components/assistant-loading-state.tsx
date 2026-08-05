@@ -67,7 +67,7 @@ function LangflowDrawingIcon({ size = 24 }: { size?: number }) {
     }
   }, []);
 
-  const animationName = "langflow-assistant-fill";
+  const animationName = "intugle-assistant-fill";
 
   return (
     <span

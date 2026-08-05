@@ -1,6 +1,5 @@
 import { useTranslation } from "react-i18next";
-import logoDarkPng from "@/assets/logo_dark.png";
-import logoLightPng from "@/assets/logo_light.png";
+import IntugleLogo from "@/assets/IntugleLogo.svg?react";
 import { ForwardedIconComponent } from "@/components/common/genericIconComponent";
 import CardsWrapComponent from "@/components/core/cardsWrapComponent";
 import { useStartNewFlow } from "@/components/core/flowBuilderWelcome/hooks/use-start-new-flow";
@@ -33,19 +32,17 @@ export const EmptyPageCommunity = ({
           <div className="z-50 flex h-full w-full flex-col items-center justify-center gap-5">
             <div className="z-50 flex flex-col items-center gap-2">
               <div className="z-50 dark:hidden">
-                <img
-                  src={logoLightPng}
+                <IntugleLogo
                   alt={t("common.intugleLogoLight")}
                   data-testid="empty_page_logo_light"
-                  className="relative top-8 h-40 pointer-events-none select-none"
+                  className="relative h-14 pointer-events-none select-none"
                 />
               </div>
               <div className="z-50 hidden dark:block">
-                <img
-                  src={logoDarkPng}
+                <IntugleLogo
                   alt={t("common.intugleLogoDark")}
                   data-testid="empty_page_logo_dark"
-                  className="relative top-8 h-40 pointer-events-none select-none"
+                  className="relative h-14 pointer-events-none select-none"
                 />
               </div>
               <span
