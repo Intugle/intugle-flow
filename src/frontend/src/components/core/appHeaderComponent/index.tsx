@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AlertDropdown from "@/alerts/alertDropDown";
-import LangflowLogo from "@/assets/LangflowLogo.svg?react";
+import IntugleIcon from "@/assets/IntugleIcon.svg?react";
 import ForwardedIconComponent from "@/components/common/genericIconComponent";
 import ModelProviderCount from "@/components/common/modelProviderCountComponent";
 import ShadTooltip from "@/components/common/shadTooltipComponent";
@@ -66,7 +66,7 @@ export default function AppHeader(): JSX.Element {
           data-testid="icon-ChevronLeft"
           aria-label={t("header.home")}
         >
-          <LangflowLogo className="h-5 w-5" aria-hidden="true" />
+          <IntugleIcon className="h-5 w-5" aria-hidden="true" />
         </Button>
         <CustomOrgSelector />
       </div>
