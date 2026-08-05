@@ -601,6 +601,38 @@ async def _patch_flow(
             new_folder_id=update_data["folder_id"],
         )
 
+    # PATCH must mirror PUT/create uniqueness checks so the API returns a
+    # predictable conflict instead of leaking a raw database constraint error.
+    if "name" in update_data and update_data["name"] != db_flow.name:
+        name_conflict = (
+            await session.exec(
+                select(Flow).where(
+                    Flow.name == update_data["name"],
+                    Flow.user_id == owner_user_id,
+                    Flow.id != db_flow.id,
+                )
+            )
+        ).first()
+        if name_conflict:
+            raise HTTPException(status_code=409, detail="Name must be unique")
+
+    if (
+        "endpoint_name" in update_data
+        and update_data["endpoint_name"] is not None
+        and update_data["endpoint_name"] != db_flow.endpoint_name
+    ):
+        endpoint_conflict = (
+            await session.exec(
+                select(Flow).where(
+                    Flow.endpoint_name == update_data["endpoint_name"],
+                    Flow.user_id == owner_user_id,
+                    Flow.id != db_flow.id,
+                )
+            )
+        ).first()
+        if endpoint_conflict:
+            raise HTTPException(status_code=409, detail="Endpoint name must be unique")
+
     if settings_service.settings.remove_api_keys:
         update_data = remove_api_keys(update_data)
 

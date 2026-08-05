@@ -17,6 +17,10 @@ from langflow.services.schema import ServiceType
 from langflow.services.variable.constants import CREDENTIAL_TYPE, GENERIC_TYPE
 
 
+LEGACY_AGENTIC_SERVER_NAME = "langflow-agentic"
+AGENTIC_SERVER_NAME = "intugle-flow-agentic"
+
+
 async def auto_configure_agentic_mcp_server(session: AsyncSession) -> None:
     """Auto-configure the Intugle Flow Agentic MCP server for all users.
 
@@ -49,7 +53,7 @@ async def auto_configure_agentic_mcp_server(session: AsyncSession) -> None:
         storage_service = get_service(ServiceType.STORAGE_SERVICE)
 
         # Server configuration
-        server_name = "intugle-flow-agentic"
+        server_name = AGENTIC_SERVER_NAME
         python_executable = sys.executable
         server_config = {
             "command": python_executable,
@@ -73,7 +77,19 @@ async def auto_configure_agentic_mcp_server(session: AsyncSession) -> None:
                 # Check if server already exists for this user
                 try:
                     server_list = await get_server_list(user, session, storage_service, settings_service)
-                    server_exists = server_name in server_list.get("mcpServers", {})
+                    mcp_servers = server_list.get("mcpServers", {})
+                    server_exists = server_name in mcp_servers
+                    legacy_server_exists = LEGACY_AGENTIC_SERVER_NAME in mcp_servers
+
+                    if legacy_server_exists:
+                        await update_server(
+                            server_name=LEGACY_AGENTIC_SERVER_NAME,
+                            server_config={},
+                            current_user=user,
+                            session=session,
+                            storage_service=storage_service,
+                            settings_service=settings_service,
+                        )
 
                     if server_exists:
                         await logger.adebug(f"Agentic MCP server already exists for user {user.username}, skipping")
@@ -146,22 +162,23 @@ async def remove_agentic_mcp_server(session: AsyncSession) -> None:
         storage_service = get_service(ServiceType.STORAGE_SERVICE)
         settings_service = get_settings_service()
 
-        server_name = "intugle-flow-agentic"
+        server_names = (AGENTIC_SERVER_NAME, LEGACY_AGENTIC_SERVER_NAME)
         servers_removed = 0
 
         for user in users:
             try:
-                # Remove the server by passing empty config
-                await update_server(
-                    server_name=server_name,
-                    server_config={},  # Empty config removes the server
-                    current_user=user,
-                    session=session,
-                    storage_service=storage_service,
-                    settings_service=settings_service,
-                )
+                for server_name in server_names:
+                    # Remove the server by passing empty config
+                    await update_server(
+                        server_name=server_name,
+                        server_config={},  # Empty config removes the server
+                        current_user=user,
+                        session=session,
+                        storage_service=storage_service,
+                        settings_service=settings_service,
+                    )
 
-                servers_removed += 1
+                    servers_removed += 1
                 await logger.adebug(f"Removed agentic MCP server for user: {user.username}")
 
             except (HTTPException, sqlalchemy_exc.SQLAlchemyError) as e:

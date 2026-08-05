@@ -207,6 +207,44 @@ async def test_update_flow(client: AsyncClient, logged_in_headers):
     assert result["name"] == updated_name, "The name must be updated"
 
 
+async def test_update_flow_rejects_duplicate_name(client: AsyncClient, logged_in_headers):
+    base_payload = {
+        "description": "string",
+        "icon": "string",
+        "icon_bg_color": "#ff00ff",
+        "gradient": "string",
+        "data": {},
+        "is_component": False,
+        "webhook": False,
+        "endpoint_name": None,
+        "tags": ["string"],
+        "folder_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    }
+
+    first = await client.post(
+        "api/v1/flows/",
+        json={**base_payload, "name": "Simple Agent"},
+        headers=logged_in_headers,
+    )
+    assert first.status_code == status.HTTP_201_CREATED
+
+    second = await client.post(
+        "api/v1/flows/",
+        json={**base_payload, "name": "Another Flow"},
+        headers=logged_in_headers,
+    )
+    assert second.status_code == status.HTTP_201_CREATED
+
+    response = await client.patch(
+        f"api/v1/flows/{second.json()['id']}",
+        json={"name": "Simple Agent", "data": {}},
+        headers=logged_in_headers,
+    )
+
+    assert response.status_code == status.HTTP_409_CONFLICT
+    assert response.json()["detail"] == "Name must be unique"
+
+
 async def test_locked_flow_rejects_api_updates_until_unlocked(client: AsyncClient, logged_in_headers):
     original_data = {"nodes": [], "edges": []}
     create_response = await client.post(

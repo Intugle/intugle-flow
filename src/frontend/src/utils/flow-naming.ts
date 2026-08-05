@@ -1,12 +1,12 @@
 import type { FlowType } from "@/types/flow";
 import { addVersionToDuplicates } from "@/utils/reactflowUtils";
 
-// Folder-scoped so a same-named flow in another folder never bumps this to "(1)".
+// Flow names are user-scoped in the backend (`unique_flow_name` on
+// `(user_id, name)`), so client-side dedupe must mirror that rule.
 export function getFolderScopedDuplicateName(
   flow: FlowType,
   flows: FlowType[],
-  folderId?: string | null,
+  _folderId?: string | null,
 ): string {
-  const folderScopedFlows = flows.filter((f) => f.folder_id === folderId);
-  return addVersionToDuplicates(flow, folderScopedFlows);
+  return addVersionToDuplicates(flow, flows);
 }
