@@ -1,1 +1,1 @@
-"""Helper utilities for the Langflow Assistant."""
+"""Helper utilities for the Intugle Flow Assistant."""

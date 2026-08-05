@@ -58,9 +58,9 @@ EDIT_CONTINUATION_INPUT = (
 )
 
 OFF_TOPIC_REFUSAL_MESSAGE = (
-    "I appreciate your interest, but I'm the Langflow Assistant and can only help with "
-    "Langflow-related topics such as building components, creating flows, configuring "
-    "deployments, and troubleshooting issues. Could you rephrase your question about Langflow?"
+    "I appreciate your interest, but I'm the Intugle Flow Assistant and can only help with "
+    "Intugle Flow-related topics such as building components, creating flows, configuring "
+    "deployments, and troubleshooting issues. Could you rephrase your question about Intugle Flow?"
 )
 
 VALIDATION_RETRY_TEMPLATE = """The previous component code has an error. Please fix it.
@@ -99,7 +99,7 @@ ERROR:
 ORIGINAL REQUEST:
 {original_input}
 
-Respond with a complete, valid Langflow component as a Python class extending Component, \
+Respond with a complete, valid Intugle Flow component as a Python class extending Component, \
 inside a single ```python code block. Do not emit raw tool calls or partial JSON."""
 
 NO_ACTION_RETRY_TEMPLATE = """Your previous reply did not change the canvas. You only described \

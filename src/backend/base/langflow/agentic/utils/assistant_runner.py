@@ -1,4 +1,4 @@
-"""Headless Langflow Assistant runner for MCP clients.
+"""Headless Intugle Flow Assistant runner for MCP clients.
 
 External MCP clients have no frontend to apply ``flow_update`` SSE
 events, so any canvas change the assistant produces must be persisted
@@ -47,7 +47,7 @@ async def _ensure_flow(session: AsyncSession, user_id: UUID, flow_id: str | None
     folder = await get_or_create_default_folder(session, user_id)
     new_flow = FlowCreate(
         name=DEFAULT_FLOW_NAME,
-        description="Created by the Langflow Assistant via MCP",
+        description="Created by the Intugle Flow Assistant via MCP",
         data={"nodes": [], "edges": []},
         folder_id=folder.id,
         user_id=user_id,

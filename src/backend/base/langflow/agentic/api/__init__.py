@@ -1,4 +1,4 @@
-"""Langflow Assistant API module."""
+"""Intugle Flow Assistant API module."""
 
 # Note: router is imported directly via langflow.agentic.api.router to avoid circular imports
 # Use: from langflow.agentic.api.router import router

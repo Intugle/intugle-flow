@@ -697,7 +697,7 @@ def create_app():
     settings = get_settings_service().settings
 
     app = FastAPI(
-        title="Langflow",
+        title="Intugle Flow",
         version=__version__,
         lifespan=lifespan,
         root_path=settings.root_path,
