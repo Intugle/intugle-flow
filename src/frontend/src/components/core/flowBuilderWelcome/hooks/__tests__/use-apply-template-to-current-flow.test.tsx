@@ -168,8 +168,9 @@ describe("useApplyTemplateToCurrentFlow", () => {
 
   it("should_dedupe_the_template_name_when_a_flow_with_that_name_already_exists_in_the_same_folder", () => {
     // The "Starter Project" folder is seeded with real starter-project flows
-    // (one literally named "Simple Agent"). Matching the rest of the app, the
-    // rename version-dedupes against sibling flows → "Simple Agent (1)".
+    // (one literally named "Simple Agent"). The backend enforces uniqueness
+    // per user, so the optimistic rename mirrors that and becomes
+    // "Simple Agent (1)".
     setStores(fullExamples, [
       { id: "seeded", name: "Simple Agent", folder_id: "folder-A" },
     ]);
@@ -184,9 +185,9 @@ describe("useApplyTemplateToCurrentFlow", () => {
     );
   });
 
-  it("should_not_dedupe_against_a_same_named_flow_in_a_different_folder", () => {
-    // Dedupe must be folder-scoped, mirroring ``useAddFlow``. A "Simple Agent"
-    // sitting in another folder must not bump this folder's flow to "(1)".
+  it("should_dedupe_against_a_same_named_flow_in_a_different_folder", () => {
+    // The backend unique constraint is user-scoped, so a matching flow in any
+    // folder must still bump the optimistic rename to "(1)".
     setStores(fullExamples, [
       { id: "other", name: "Simple Agent", folder_id: "folder-B" },
     ]);
@@ -197,7 +198,7 @@ describe("useApplyTemplateToCurrentFlow", () => {
     });
 
     expect(setCurrentFlowInManager).toHaveBeenCalledWith(
-      expect.objectContaining({ name: "Simple Agent" }),
+      expect.objectContaining({ name: "Simple Agent (1)" }),
     );
   });
 

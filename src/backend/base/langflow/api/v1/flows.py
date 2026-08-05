@@ -93,11 +93,16 @@ __all__ = [
 def _handle_unique_constraint_error(exc: Exception, *, status_code: int = 400) -> HTTPException:
     """Parse a UNIQUE constraint error and return an appropriate HTTPException."""
     msg = str(exc)
-    if "UNIQUE constraint failed" not in msg:
-        return HTTPException(status_code=500, detail=msg)
-    columns = msg.split("UNIQUE constraint failed: ")[1].split(".")[1].split("\n")[0]
-    column = columns.split(",")[1] if "id" in columns.split(",")[0] else columns.split(",")[0]
-    return HTTPException(status_code=status_code, detail=f"{column.capitalize().replace('_', ' ')} must be unique")
+    if "UNIQUE constraint failed" in msg:
+        columns = msg.split("UNIQUE constraint failed: ")[1].split(".")[1].split("\n")[0]
+        column = columns.split(",")[1] if "id" in columns.split(",")[0] else columns.split(",")[0]
+        return HTTPException(status_code=status_code, detail=f"{column.capitalize().replace('_', ' ')} must be unique")
+    if "duplicate key value violates unique constraint" in msg:
+        if '"unique_flow_name"' in msg:
+            return HTTPException(status_code=status_code, detail="Name must be unique")
+        if '"unique_flow_endpoint_name"' in msg:
+            return HTTPException(status_code=status_code, detail="Endpoint name must be unique")
+    return HTTPException(status_code=500, detail=msg)
 
 
 # build router
@@ -118,7 +123,7 @@ async def create_flow(
     except HTTPException:
         raise
     except Exception as e:
-        raise _handle_unique_constraint_error(e) from e
+        raise _handle_unique_constraint_error(e, status_code=409) from e
 
 
 @router.get("/", response_model=list[FlowRead] | Page[FlowRead] | list[FlowHeader], status_code=200)
