@@ -2,104 +2,185 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TODO: Confirm that all colors here are found in tailwind config */
+/* Intugle Design System — authoritative token contract per branding/DESIGN.md */
+/* Token architecture: Shadcn HSL (§2.4) + --theme-* (§2.1-2.2) + --sb-* (§7) + --app-* glass (§2.5) + status (§2.3) */
 
 @layer base {
   :root {
+    /* ── Font families (§3.1) ── */
     --font-sans: "Inter", sans-serif;
-    --font-mono: "JetBrains Mono", monospace;
-    --font-chivo: "Chivo", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-display: "Raleway", sans-serif;
+    --font-secondary: "Open Sans", sans-serif;
 
-    --foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --background: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --muted: 240 5% 96%; /* hsl(240, 5%, 96%) */
-    --muted-foreground: 240 4% 43%; /* hsl(240, 4%, 43%) — darkened from 46% to meet WCAG AA 4.5:1 */
-    --card: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --card-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --popover: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --popover-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --border: 240 6% 90%; /* hsl(240, 6%, 90%) */
-    --input: 240 6% 90%; /* hsl(240, 6%, 90%) */
-    --primary-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --primary: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --secondary: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --secondary-foreground: 240 4% 16%; /* hsl(240, 4%, 16%) */
-    --accent: 240 5% 96%; /* hsl(240, 5%, 96%) */
-    --accent-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --destructive: 0 72% 45%; /* hsl(0, 72%, 45%) */
-    --destructive-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --accent-amber: 26 90% 37%; /* hsl(26, 90%, 37%) */
-    --accent-amber-foreground: 26 90% 37%; /* hsl(26, 90%, 37%) */
-    --ring: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --primary-hover: 240 4% 16%; /* hsl(240, 4%, 16%) */
-    --secondary-hover: 240 6% 90%; /* hsl(240, 6%, 90%) */
-    --placeholder-foreground: 240 5% 40%; /* hsl(240, 5%, 40%) — darkened for WCAG 1.4.3 contrast ≥4.5:1 on white */
-    --canvas: 240 5% 96%; /* hsl(240, 5%, 96%) */
-    --canvas-dot: 240 5% 65%; /* hsl(240, 5%, 65%) */
-    --accent-emerald: 149 80% 90%; /* hsl(149, 80%, 90%) */
-    --accent-emerald-foreground: 161 94% 23%; /* hsl(161, 94%, 23%) — darkened for ≥4.5:1 on accent-emerald bg */
-    --accent-emerald-hover: 152.4 76% 80.4%; /* hsl(152.4, 76%, 80.4%) */
-    --accent-indigo: 226 100% 94%; /* hsl(226, 100%, 94%) */
-    --accent-indigo-foreground: 243 75% 59%; /* hsl(243, 75%, 59%) */
-    --accent-red-foreground: 0 72% 51%; /* hsl(0, 72%, 51%) */
+    /* ── Shadcn HSL tokens — light (§2.4) ── */
+    --background: 0 0% 100%;            /* #ffffff */
+    --foreground: 222 47% 11%;           /* #0f172a */
+    --card: 0 0% 100%;                   /* #ffffff */
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 217 91% 60%;              /* #3b82f6 */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 221 83% 53%;        /* #2563eb */
+    --secondary: 210 15% 93%;            /* #e9eef2 */
+    --secondary-foreground: 222 47% 11%;
+    --secondary-hover: 210 15% 85%;
+    --muted: 210 15% 93%;
+    --muted-foreground: 220 10% 45%;     /* #6b7280 approx */
+    --accent: 210 15% 90%;
+    --accent-foreground: 222 47% 11%;
+    --destructive: 0 72% 51%;            /* #dc2626 */
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 87%;               /* #dde1e6 */
+    --input: 220 13% 87%;
+    --ring: 217 91% 60%;                 /* #3b82f6 */
+    --radius: 0.5rem;
 
-    --accent-blue: 217 91% 60%; /* hsl(217, 91%, 60%) — blue-500 */
-    --accent-blue-foreground: 217 91% 60%; /* hsl(217, 91%, 60%) */
-    --accent-blue-muted: 217 100% 58% / 0.2; /* #2B7FFF33 */
-    --accent-blue-muted-foreground: 213 100% 66%; /* #51A2FF */
-    --deployment-callout: 224 71% 40% / 0.1; /* rgba(30, 64, 175, 0.1) */
-    --deployment-callout-border:
-      217 91% 60% / 0.3; /* rgba(59, 130, 246, 0.3) */
-    --deployment-callout-foreground: 213 94% 68%; /* #93C5FD */
+    /* ── Intugle theme tokens (§2.1-2.2) ── */
+    --theme-bg: #ffffff;
+    --theme-text: #0f172a;
+    --theme-bg-card: #ffffff;
+    --theme-bg-muted: #f9f9fa;
+    --theme-bg-muted-2: #e9eef2;
+    --theme-border: #e2e8f0;
+    --theme-border-muted: #e2e8f0;
+    --theme-primary: #3b82f6;
+    --theme-secondary: #64748b;
 
-    --accent-pink: 326, 78%, 95%; /* hsl(326, 78%, 95%) */
-    --accent-pink-foreground: 333 71% 51%; /* hsl(333, 71%, 51%) */
+    /* ── Glass / panel surfaces (§2.5) ── */
+    --app-panel-bg: #ffffff;
+    --app-glass-bg: rgba(255, 255, 255, 0.98);
+    --app-glass-border: rgba(203, 213, 225, 0.8);
+    --app-glass-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9);
 
-    /* Langflow Assistant brand palette — kept identical in light and dark
-       so the assistant glyph + input glow read the same in either theme. */
-    --accent-assistant-brand: 335 100% 60%; /* #FF3276 — assistant pink */
-    --accent-assistant-purple: 270 100% 73%; /* #BA75FF — assistant purple */
+    /* ── Sidebar tokens (§7) ── */
+    --sb-bg: #f8fafc;
+    --sb-border: rgba(226, 232, 240, 0.8);
+    --sb-text: #334155;
+    --sb-text-muted: #64748b;
+    --sb-text-active: #2563eb;
+    --sb-item-bg: rgba(226, 232, 240, 0.5);
+    --sb-item-bg-hover: rgba(203, 213, 225, 0.7);
+    --sb-item-bg-active: rgba(59, 130, 246, 0.12);
+    --sb-accent: #3b82f6;
 
-    --accent-purple-muted: 271 100% 64% / 0.2; /* #AD46FF33 */
-    --accent-purple-muted-foreground: 271 100% 74%; /* #C27AFF */
+    /* ── Semantic status colors (§2.3) — HSL channels ── */
+    --success: 142 70% 45%;
+    --warning: 48 96% 53%;
+    --info: 217 91% 60%;
+    --destructive-channel: 0 72% 51%;
+
+    /* ── Motion tokens (§4.4) ── */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ── Elevation (§4.3) ── */
+    --shadow-sm: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(222 47% 11% / 0.1), 0 2px 4px -2px hsl(222 47% 11% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(222 47% 11% / 0.1), 0 4px 6px -4px hsl(222 47% 11% / 0.1);
+    --shadow-xl: 0 20px 25px -5px hsl(222 47% 11% / 0.1), 0 8px 10px -6px hsl(222 47% 11% / 0.1);
+
+    /* ── Legacy shims (keep existing Tailwind color map working) ── */
+    --placeholder-foreground: 220 10% 45%;
+    --canvas: 220 14% 96%;
+    --canvas-dot: 220 13% 75%;
+    --tooltip: 222 47% 11%;
+    --tooltip-foreground: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover-foreground: 222 47% 11%;
+
+    /* ── Accent semantic extensions ── */
+    --accent-blue: 217 91% 60%;
+    --accent-blue-foreground: 217 91% 60%;
+    --accent-blue-muted: 217 100% 58% / 0.2;
+    --accent-blue-muted-foreground: 213 100% 66%;
+
+    --accent-amber: 48 96% 89%;
+    --accent-amber-foreground: 26 90.5% 37.1%;
+
+    --accent-emerald: 149 80% 90%;
+    --accent-emerald-foreground: 161 94% 23%;
+    --accent-emerald-hover: 152.4 76% 80.4%;
+
+    --accent-indigo: 226 100% 94%;
+    --accent-indigo-foreground: 243 75% 59%;
+
+    --accent-pink: 326 78% 95%;
+    --accent-pink-foreground: 333 71% 51%;
+
+    --accent-red-foreground: 0 72% 51%;
+
+    --accent-purple-muted: 271 100% 64% / 0.2;
+    --accent-purple-muted-foreground: 271 100% 74%;
     --accent-purple-foreground: 271 81% 56%;
 
-    --tooltip: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --tooltip-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
+    --red-foreground: 0 90.6% 70.8%;
+    --indigo-foreground: 243.7 54.5% 41.4%;
 
-    --jse-theme-color: hsl(240, 5%, 96%);
-    --jse-theme-color-highlight: hsl(240, 6%, 90%);
-    --jse-menu-color: hsl(240, 6%, 90%);
-    --jse-main-border: hsl(240, 6%, 90%);
-    --jse-background-color: hsl(240, 5%, 96%);
-    --jse-text-color: hsl(0, 0%, 0%);
-    --jse-selection-background-color: hsl(240, 4%, 46%, 0.2);
-    --jse-selection-background-inactive-color: hsl(240, 4%, 46%, 0.15);
-    --jse-hover-background-color: hsl(240, 5%, 96%);
-    --jse-active-line-background-color: hsl(240, 5%, 96%);
-    --jse-search-match-background-color: hsl(240, 5%, 96%);
-    --jse-search-match-color: hsl(243, 75%, 59%);
-    --jse-text-readonly: hsl(240, 4%, 46%);
+    --deployment-callout: 224 71% 40% / 0.1;
+    --deployment-callout-border: 217 91% 60% / 0.3;
+    --deployment-callout-foreground: 213 94% 68%;
+
+    /* Assistant brand palette (anchored, same in both modes) */
+    --accent-assistant-brand: 335 100% 60%;
+    --accent-assistant-purple: 270 100% 73%;
+
+    /* ── JSE theme (light) ── */
+    --jse-theme-color: #ffffff;
+    --jse-theme-color-highlight: #f1f5f9;
+    --jse-menu-color: #f1f5f9;
+    --jse-main-border: #e2e8f0;
+    --jse-background-color: #ffffff;
+    --jse-text-color: #0f172a;
+    --jse-selection-background-color: rgba(100, 116, 139, 0.2);
+    --jse-selection-background-inactive-color: rgba(100, 116, 139, 0.15);
+    --jse-hover-background-color: #f8fafc;
+    --jse-active-line-background-color: #f8fafc;
+    --jse-search-match-background-color: #f8fafc;
+    --jse-search-match-color: #3b82f6;
+    --jse-text-readonly: #64748b;
     --jse-error-color: hsl(0, 72%, 51%);
     --jse-warning-color: hsl(48, 96%, 89%);
     --jse-info-color: hsl(221, 83%, 53%);
     --jse-success-color: hsl(142, 76%, 36%);
 
-    --node-selected: 243 75% 59%;
+    /* ── Functional colors (shared across themes) ── */
+    --node-selected: 217 91% 60%;
+    --node-ring: 220 13% 87%;
     --round-btn-shadow: #00000063;
-    --ice: #31a3cc;
-    --selected: #2196f3;
+    --ice: #3b82f6;
+    --selected: #3b82f6;
     --discord-color: #5765f2;
+    --hover: #f1f5f9;
+    --disabled-run: #93c5fd;
+    --filter-foreground: #2563eb;
+    --filter-background: #eff6ff;
 
+    /* Colors shared in light and dark */
+    --blur-shared: #0f172ade;
+    --build-trigger: #dc735b;
+    --chat-trigger: #3b82f6;
+    --chat-trigger-disabled: #93c5fd;
+    --chat-send: #000000;
+    --status-red: #ef4444;
+    --status-yellow: #eab308;
+    --status-green: #4ade80;
+    --status-blue: #2563eb;
+    --status-gray: #6b7280;
+    --connection: #555;
+
+    /* ── Error / success / info ── */
+    --error: #991b1b;
     --error-background: #fef2f2;
     --error-foreground: #991b1b;
-    --error: #991b1b;
-
+    --error-red: 0 86% 97%;
+    --error-red-border: 0 96% 89%;
     --success-background: #f0fdf4;
     --success-foreground: #14532d;
-
-    --info-background: #f0f4fd;
-    --info-foreground: #141653;
+    --info-background: #eff6ff;
+    --info-foreground: #1e3a5f;
 
     --high-indigo: #4338ca;
     --medium-indigo: #6366f1;
@@ -109,181 +190,182 @@
     --beta-foreground: rgb(37 99 235);
     --beta-foreground-soft: rgb(37 99 235 / 80%);
 
-    --chat-bot-icon: #afe6ef;
-    --chat-user-icon: #aface9;
+    --chat-bot-icon: #93c5fd;
+    --chat-user-icon: #a5b4fc;
 
-    --component-icon: #d8598a;
-    --flow-icon: #2f67d0;
-    --hover: #f2f4f5;
-    --disabled-run: #6366f1;
+    --component-icon: #2563eb;
+    --flow-icon: #3b82f6;
 
-    --filter-foreground: #4f46e5;
-    --filter-background: #eef2ff;
-    /* Colors that are shared in dark and light mode */
-    --blur-shared: #151923de;
-    --build-trigger: #dc735b;
-    --chat-trigger: #5c8be1;
-    --chat-trigger-disabled: #b4c3da;
-    --status-red: #ef4444;
-    --status-yellow: #eab308;
-    --chat-send: #000000;
-    --status-green: #4ade80;
-    --status-blue: #2563eb;
-    --status-gray: #6b7280;
-    --connection: #555;
+    --note-amber: 48 96.6% 76.7%;
+    --note-neutral: 215 12% 90%;
+    --note-rose: 352.7 96.1% 90%;
+    --note-blue: 213.3 96.9% 87.3%;
+    --note-lime: 80.9 88.5% 79.6%;
+    --warning: 48 96.6% 76.7%;
+    --warning-foreground: 220 47% 11%;
+    --warning-text: 0 0% 100%;
 
-    --note-amber: 48 96.6% 76.7%; /* hsl(48, 96.6%, 76.7%) */
-    --note-neutral: 240 5.9% 90%; /* hsl(240, 5.9%, 90%) */
-    --note-rose: 352.7 96.1% 90%; /* hsl(352.7, 96.1%, 90%) */
-    --note-blue: 213.3 96.9% 87.3%; /* hsl(213.3, 96.9%, 87.3%) */
-    --note-lime: 80.9 88.5% 79.6%; /* hsl(80.9, 88.5%, 79.6%) */
-
-    --warning: 48 96.6% 76.7%; /* hsl(48, 96.6%, 76.7%) */
-    --warning-foreground: 240 6% 10%; /* hsl(240, 6%, 10%) */
-    --warning-text: 0 0% 100%; /* hsl(0, 0%, 100%) */
-
-    --error-red: 0, 86%, 97%; /*hsla(0, 86%, 97%)*/
-    --error-red-border: 0, 96%, 89%; /*hsla(0,96%,89%)*/
-
-    --code-background: 240 6% 10%;
-    --code-description-background: 240 6% 10%;
-    --code-foreground: 240 6% 90%;
-    --placeholder: 240 5% 64.9%;
-    --hard-zinc: 240 5.2% 33.9%;
+    --code-background: 220 47% 11%;
+    --code-description-background: 220 47% 11%;
+    --code-foreground: 210 20% 98%;
+    --placeholder: 220 10% 55%;
+    --hard-zinc: 220 10% 40%;
     --smooth-red: 0 93.3% 94.1%;
-    --radius: 0.5rem;
 
     --datatype-pink: 333.3 71.4% 50.6%;
     --datatype-pink-foreground: 325.7 77.8% 94.7%;
-
     --datatype-rose: 346.8 77.2% 49.8%;
     --datatype-rose-foreground: 355.6 100% 94.7%;
-
     --datatype-yellow: 40.6 96.1% 40.4%;
     --datatype-yellow-foreground: 54.9 96.7% 88%;
-
     --datatype-blue: 221.2 83.2% 53.3%;
     --datatype-blue-foreground: 214.3 94.6% 92.7%;
-
     --datatype-gray: 215 13.8% 34.1%;
     --datatype-gray-foreground: 220 14.3% 95.9%;
-
     --datatype-lime: 84.8 85.2% 34.5%;
     --datatype-lime-foreground: 79.6 89.1% 89.2%;
-
     --datatype-red: 0 72.2% 50.6%;
     --datatype-red-foreground: 0 93.3% 94.1%;
-
     --datatype-violet: 262.1 83.3% 57.8%;
     --datatype-violet-foreground: 251.4 91.3% 95.5%;
-
     --datatype-emerald: 161.4 93.5% 30.4%;
     --datatype-emerald-foreground: 149.3 80.4% 90%;
-
     --datatype-fuchsia: 293.4 69.5% 48.8%;
     --datatype-fuchsia-foreground: 287 100% 95.5%;
-
     --datatype-purple: 271.5 81.3% 55.9%;
     --datatype-purple-foreground: 268.7 100% 95.5%;
-
     --datatype-cyan: 191.6 91.4% 36.5%;
     --datatype-cyan-foreground: 185.1 95.9% 90.4%;
-
     --datatype-indigo: 243.4 75.4% 58.6%;
     --datatype-indigo-foreground: 226.5 100% 93.9%;
-
     --datatype-orange: 20.5 90.2% 48.2%;
     --datatype-orange-foreground: 34.3 100% 91.8%;
 
-    --node-ring: 240 6% 90%;
+    --neon-fuschia: 340 100% 60%;
+    --digital-orchid: 295 100% 75%;
+    --plasma-purple: 262 97% 57%;
+    --electric-blue: 248 99% 53%;
+    --holo-frost: 186 98% 80%;
+    --terminal-green: 129 98% 80%;
+    --cosmic-void: 258 95% 16%;
 
-    --neon-fuschia: 340 100% 60%; /* hsl(340, 100%, 60%) */
-    --digital-orchid: 295 100% 75%; /* hsl(295, 100%, 75%) */
-    --plasma-purple: 262 97% 57%; /* hsl(262, 97%, 57%) */
-    --electric-blue: 248 99% 53%; /* hsl(248, 99%, 53%) */
-    --holo-frost: 186 98% 80%; /* hsl(186, 98%, 80%) */
-    --terminal-green: 129 98% 80%; /* hsl(129, 98%, 80%) */
-    --cosmic-void: 258 95% 16%; /* hsl(258, 95%, 16%) */
-
-    --tool-mode-gradient-1: #f480ff;
-    --tool-mode-gradient-2: #ff3276;
+    --tool-mode-gradient-1: #3b82f6;
+    --tool-mode-gradient-2: #2563eb;
 
     --slider-input-border: #d4d4d8;
-
-    --zinc-foreground: 240 5.9% 90%;
-
-    --accent-amber: 48, 96%, 89%;
-    --accent-amber-foreground: 26 90.5% 37.1%;
-    --red-foreground: 0 90.6% 70.8%;
-    --indigo-foreground: 243.7 54.5% 41.4%;
+    --zinc-foreground: 210 20% 98%;
   }
 
   .dark {
-    --foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --background: 240 6% 10%; /* hsl(240, 6%, 10%) */
-    --muted: 240 4% 16%; /* hsl(240, 4%, 16%) */
-    --muted-foreground: 240 5% 65%; /* hsl(240, 5%, 65%) */
-    --card: 240 6% 10%; /* hsl(240, 6%, 10%) */
-    --card-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --popover: 240 6% 10%; /* hsl(240, 6%, 10%) */
-    --popover-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --border: 240 5% 26%; /* hsl(240, 5%, 26%) */
-    --input: 240 5% 34%; /* hsl(240, 5%, 34%) */
-    --primary-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --primary: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --secondary: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --secondary-foreground: 240 6% 90%; /* hsl(240, 6%, 90%) */
-    --accent: 240 4% 16%; /* hsl(240, 4%, 16%) */
-    --accent-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --destructive: 0 84% 60%; /* hsl(0, 84%, 60%) */
-    --destructive-foreground: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --ring: 0 0% 100%; /* hsl(0, 0%, 100%) */
-    --primary-hover: 240 6% 90%; /* hsl(240, 6%, 90%) */
-    --secondary-hover: 240 4% 16%; /* hsl(240, 4%, 16%) */
-    --placeholder-foreground: 240 4% 63%; /* hsl(240, 4%, 63%) — lightened for WCAG 1.4.3 ≥4.5:1 on dark bg */
-    --canvas: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --canvas-dot: 240 5.3% 26.1%; /* hsl(240, 5.3%, 26.1%) */
+    /* ── Shadcn HSL tokens — dark (§2.4) ── */
+    --background: 224 71.4% 4.1%;       /* #0f172a */
+    --foreground: 210 20% 98%;           /* #cbd5e1 → #f1f5f9 */
+    --card: 224 71.4% 4.1%;              /* #0f172a */
+    --card-foreground: 210 20% 98%;
+    --popover: 224 71.4% 4.1%;
+    --popover-foreground: 210 20% 98%;
+    --primary: 210 20% 98%;
+    --primary-foreground: 220.9 39.3% 11%;
+    --primary-hover: 210 20% 90%;
+    --secondary: 215 27.9% 16.9%;        /* #1e293b */
+    --secondary-foreground: 210 20% 98%;
+    --secondary-hover: 215 27.9% 20%;
+    --muted: 215 27.9% 16.9%;            /* #1e293b */
+    --muted-foreground: 217.9 10.6% 64.9%;
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 215 27.9% 16.9%;           /* #334155 */
+    --input: 215 27.9% 16.9%;
+    --ring: 216 12.2% 83.9%;
 
-    --accent-emerald: 164 86% 16%; /* hsl(164, 86%, 16%) */
-    --accent-emerald-foreground: 158 64% 52%; /* hsl(158, 64%, 52%) */
-    --accent-emerald-hover: 163.1 88.1% 19.8%; /* hsl(163.1, 88.1%, 19.8%) */
-    --accent-indigo: 242 25% 34%; /* hsl(242, 25%, 34%) */
-    --accent-indigo-foreground: 234 89% 74%; /* hsl(234, 89%, 74%) */
-    --accent-blue: 213 94% 68%; /* hsl(213, 94%, 68%) */
-    --accent-blue-foreground: 213 94% 68%; /* hsl(213, 94%, 68%) */
-    --accent-blue-muted: 217 100% 58% / 0.2; /* #2B7FFF33 */
-    --accent-blue-muted-foreground: 213 100% 66%; /* #51A2FF */
-    --deployment-callout: 224 71% 40% / 0.1; /* rgba(30, 64, 175, 0.1) */
-    --deployment-callout-border:
-      217 91% 60% / 0.3; /* rgba(59, 130, 246, 0.3) */
-    --deployment-callout-foreground: 213 94% 68%; /* #93C5FD */
+    /* ── Intugle theme tokens (§2.1) ── */
+    --theme-bg: #0f172a;
+    --theme-text: #cbd5e1;
+    --theme-bg-card: #1e293b;
+    --theme-bg-muted: #1e293b;
+    --theme-bg-muted-2: #151e31;
+    --theme-border: #334155;
+    --theme-border-muted: #3341554d;
+    --theme-primary: #3b82f6;
+    --theme-secondary: #64748b;
 
-    --accent-pink: 336, 69%, 30%; /* hsl(336, 69%, 30%) */
-    --accent-pink-foreground: 329 86% 70%; /* hsl(329, 86%, 70%) */
-    /* Brand colors stay identical in dark mode — see :root for rationale. */
-    --accent-assistant-brand: 335 100% 60%; /* #FF3276 — assistant pink */
-    --accent-assistant-purple: 270 100% 73%; /* #BA75FF — assistant purple */
-    --accent-purple-muted: 271 100% 64% / 0.2; /* #AD46FF33 */
-    --accent-purple-muted-foreground: 271 100% 74%; /* #C27AFF */
-    --accent-purple-foreground: 270, 95%, 75%;
-    --accent-red-foreground: 0 91% 71%; /* hsl(0, 91%, 71%) */
-    --tooltip: 0 0% 100%; /* hsl(0, 0%, 100%) */
+    /* ── Glass / panel surfaces (§2.5) ── */
+    --app-panel-bg: rgba(12, 18, 34, 0.85);
+    --app-glass-bg: rgba(10, 15, 28, 0.65);
+    --app-glass-border: rgba(255, 255, 255, 0.1);
+    --app-glass-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
 
-    --jse-theme-color: hsl(240, 4%, 16%) !important;
-    --jse-theme-color-highlight: hsl(240, 4%, 16%);
-    --jse-panel-background: hsl(240, 4%, 16%);
-    --jse-menu-color: hsl(240, 5%, 26%);
+    /* ── Sidebar tokens (§7) ── */
+    --sb-bg: #020617;
+    --sb-border: rgba(30, 41, 59, 0.5);
+    --sb-text: #d1d5db;
+    --sb-text-muted: #9ca3af;
+    --sb-text-active: #60a5fa;
+    --sb-item-bg: rgba(30, 41, 59, 0.3);
+    --sb-item-bg-hover: rgba(30, 41, 59, 0.6);
+    --sb-item-bg-active: rgba(37, 99, 235, 0.2);
+    --sb-accent: #3b82f6;
 
-    --jse-main-border: hsl(240, 5%, 26%);
-    --jse-background-color: hsl(240, 4%, 16%);
-    --jse-text-color: hsl(0, 0%, 100%);
-    --jse-selection-background-color: hsl(240, 5%, 65%, 0.2);
-    --jse-selection-background-inactive-color: hsl(240, 5%, 65%, 0.15);
-    --jse-hover-background-color: hsl(240, 4%, 16%);
-    --jse-active-line-background-color: hsl(240, 4%, 16%);
-    --jse-search-match-background-color: hsl(240, 4%, 16%);
-    --jse-search-match-color: hsl(234, 89%, 74%);
-    --jse-text-readonly: hsl(240, 5%, 65%);
+    /* ── Legacy shims ── */
+    --placeholder-foreground: 217.9 10.6% 64.9%;
+    --canvas: 0 0% 0%;
+    --canvas-dot: 215 27.9% 16.9%;
+    --tooltip: 0 0% 100%;
+    --tooltip-foreground: 0 0% 0%;
+
+    /* ── Accent semantic extensions ── */
+    --accent-blue: 217 91% 60%;
+    --accent-blue-foreground: 217 91% 60%;
+    --accent-blue-muted: 217 100% 58% / 0.2;
+    --accent-blue-muted-foreground: 213 100% 66%;
+
+    --accent-amber: 22 78% 26%;
+    --accent-amber-foreground: 45.9 96.7% 64.5%;
+
+    --accent-emerald: 164 86% 16%;
+    --accent-emerald-foreground: 158 64% 52%;
+    --accent-emerald-hover: 163.1 88.1% 19.8%;
+
+    --accent-indigo: 242 25% 34%;
+    --accent-indigo-foreground: 234 89% 74%;
+
+    --accent-pink: 336 69% 30%;
+    --accent-pink-foreground: 329 86% 70%;
+
+    --accent-red-foreground: 0 91% 71%;
+
+    --accent-purple-muted: 271 100% 64% / 0.2;
+    --accent-purple-muted-foreground: 271 100% 74%;
+    --accent-purple-foreground: 270 95% 75%;
+
+    --red-foreground: 0 72.2% 50.6%;
+    --indigo-foreground: 234.5 89.5% 73.9%;
+
+    --deployment-callout: 224 71% 40% / 0.1;
+    --deployment-callout-border: 217 91% 60% / 0.3;
+    --deployment-callout-foreground: 213 94% 68%;
+
+    /* Assistant brand palette (anchored, same as light) */
+    --accent-assistant-brand: 335 100% 60%;
+    --accent-assistant-purple: 270 100% 73%;
+
+    /* ── JSE theme (dark) ── */
+    --jse-theme-color: #0f172a !important;
+    --jse-theme-color-highlight: #1e293b;
+    --jse-panel-background: #1e293b;
+    --jse-menu-color: #334155;
+    --jse-main-border: #334155;
+    --jse-background-color: #1e293b;
+    --jse-text-color: #f1f5f9;
+    --jse-selection-background-color: rgba(148, 163, 184, 0.2);
+    --jse-selection-background-inactive-color: rgba(148, 163, 184, 0.15);
+    --jse-hover-background-color: #1e293b;
+    --jse-active-line-background-color: #1e293b;
+    --jse-search-match-background-color: #1e293b;
+    --jse-search-match-color: #60a5fa;
+    --jse-text-readonly: #94a3b8;
     --jse-error-color: hsl(0, 84%, 60%);
     --jse-warning-color: hsl(45, 97%, 65%);
     --jse-info-color: hsl(221, 83%, 53%);
@@ -291,206 +373,180 @@
 
     --jse-theme: dark;
     --jse-text-color-inverse: #4d4d4d;
-    --jse-modal-background: #2f2f2f;
+    --jse-modal-background: #1e293b;
     --jse-modal-overlay-background: rgba(0, 0, 0, 0.5);
-    --jse-modal-code-background: #2f2f2f;
+    --jse-modal-code-background: #1e293b;
     --jse-tooltip-color: var(--jse-text-color);
-    --jse-tooltip-background: #4b4b4b;
-    --jse-tooltip-border: 1px solid #737373;
+    --jse-tooltip-background: #334155;
+    --jse-tooltip-border: 1px solid #475569;
     --jse-tooltip-action-button-color: inherit;
-    --jse-tooltip-action-button-background: #737373;
-    --jse-panel-background-border: 1px solid #464646;
+    --jse-tooltip-action-button-background: #475569;
+    --jse-panel-background-border: 1px solid #334155;
     --jse-panel-color: var(--jse-text-color);
-    --jse-panel-color-readonly: #737373;
-    --jse-panel-border: 1px solid #3c3c3c;
+    --jse-panel-color-readonly: #475569;
+    --jse-panel-border: 1px solid #1e293b;
     --jse-panel-button-color-highlight: #e5e5e5;
-
-    --jse-panel-button-background-highlight: #464646;
-    --jse-navigation-bar-background: #656565;
-    --jse-navigation-bar-background-highlight: #7e7e7e;
+    --jse-panel-button-background-highlight: #334155;
+    --jse-navigation-bar-background: #475569;
+    --jse-navigation-bar-background-highlight: #64748b;
     --jse-navigation-bar-dropdown-color: var(--jse-text-color);
-    --jse-context-menu-background: #4b4b4b;
-    --jse-context-menu-background-highlight: #595959;
-    --jse-context-menu-separator-color: #595959;
+    --jse-context-menu-background: #334155;
+    --jse-context-menu-background-highlight: #475569;
+    --jse-context-menu-separator-color: #475569;
     --jse-context-menu-color: var(--jse-text-color);
-    --jse-context-menu-pointer-background: #737373;
-    --jse-context-menu-pointer-background-highlight: #818181;
+    --jse-context-menu-pointer-background: #475569;
+    --jse-context-menu-pointer-background-highlight: #64748b;
     --jse-context-menu-pointer-color: var(--jse-context-menu-color);
-    --jse-key-color: #9cdcfe;
+    --jse-key-color: #93c5fd;
     --jse-value-color: var(--jse-text-color);
-    --jse-value-color-number: #b5cea8;
-    --jse-value-color-boolean: #569cd6;
-    --jse-value-color-null: #569cd6;
-    --jse-value-color-string: #ce9178;
-    --jse-value-color-url: #ce9178;
-    --jse-delimiter-color: #949494;
+    --jse-value-color-number: #86efac;
+    --jse-value-color-boolean: #93c5fd;
+    --jse-value-color-null: #93c5fd;
+    --jse-value-color-string: #fca5a5;
+    --jse-value-color-url: #fca5a5;
+    --jse-delimiter-color: #94a3b8;
     --jse-edit-outline: 2px solid var(--jse-text-color);
-    --jse-search-match-background-color: #343434;
-    --jse-collapsed-items-background-color: #333333;
-    --jse-collapsed-items-selected-background-color: #565656;
+    --jse-search-match-background-color: #1e293b;
+    --jse-collapsed-items-background-color: #1e293b;
+    --jse-collapsed-items-selected-background-color: #334155;
     --jse-collapsed-items-link-color: #b2b2b2;
     --jse-collapsed-items-link-color-highlight: #ec8477;
-    --jse-search-match-color: #724c27;
-    --jse-search-match-outline: 1px solid #966535;
-    --jse-search-match-active-color: #9f6c39;
-    --jse-search-match-active-outline: 1px solid #bb7f43;
-    --jse-tag-background: #444444;
+    --jse-search-match-color: #b45309;
+    --jse-search-match-outline: 1px solid #d97706;
+    --jse-search-match-active-color: #d97706;
+    --jse-search-match-active-outline: 1px solid #f59e0b;
+    --jse-tag-background: #334155;
     --jse-tag-color: #bdbdbd;
-    --jse-table-header-background: #333333;
-    --jse-table-header-background-highlight: #424242;
+    --jse-table-header-background: #1e293b;
+    --jse-table-header-background-highlight: #334155;
     --jse-table-row-odd-background: rgba(255, 255, 255, 0.1);
-    --jse-input-background: #3d3d3d;
+    --jse-input-background: #1e293b;
     --jse-input-border: var(--jse-main-border);
-    --jse-button-background: #808080;
+    --jse-button-background: #64748b;
     --jse-button-background-highlight: #7a7a7a;
     --jse-button-color: #e0e0e0;
-    --jse-button-secondary-background: #494949;
-    --jse-button-secondary-background-highlight: #5d5d5d;
+    --jse-button-secondary-background: #334155;
+    --jse-button-secondary-background-highlight: #475569;
     --jse-button-secondary-background-disabled: #9d9d9d;
     --jse-button-secondary-color: var(--jse-text-color);
-    --jse-a-color: #55abff;
-    --jse-a-color-highlight: #4387c9;
-    --jse-svelte-select-background: #3d3d3d;
-    --jse-svelte-select-border: 1px solid #4f4f4f;
-    --list-background: #3d3d3d;
-    --item-hover-bg: #505050;
-    --multi-item-bg: #5b5b5b;
+    --jse-a-color: #60a5fa;
+    --jse-a-color-highlight: #3b82f6;
+    --jse-svelte-select-background: #1e293b;
+    --jse-svelte-select-border: 1px solid #334155;
+    --list-background: #1e293b;
+    --item-hover-bg: #334155;
+    --multi-item-bg: #334155;
     --input-color: #d4d4d4;
-    --multi-clear-bg: #8a8a8a;
+    --multi-clear-bg: #475569;
     --multi-item-clear-icon-color: #d4d4d4;
-    --multi-item-outline: 1px solid #696969;
+    --multi-item-outline: 1px solid #475569;
     --list-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.4);
-    --jse-color-picker-background: #656565;
-    --jse-color-picker-border-box-shadow: #8c8c8c 0 0 0 1px;
+    --jse-color-picker-background: #475569;
+    --jse-color-picker-border-box-shadow: #94a3b8 0 0 0 1px;
 
-    --tooltip-foreground: 0 0% 0%; /* hsl(0, 0%, 0%) */
-    --error-red: 0, 75%, 15%; /*hsla(0, 75%, 15%)*/
-    --error-red-border: 0, 70%, 35%; /*hsla(0,70%,35%)*/
-
-    --note-amber: 45.9 96.7% 64.5%; /* hsl(45.9, 96.7%, 64.5%) */
-    --note-neutral: 240 4.9% 83.9%; /* hsl(240, 4.9%, 83.9%) */
-    --note-rose: 352.6 95.7% 81.8%; /* hsl(352.6, 95.7%, 81.8%) */
-    --note-blue: 211.7 96.4% 78.4%; /* hsl(211.7, 96.4%, 78.4%) */
-    --note-lime: 82 84.5% 67.1%; /* hsl(82, 84.5%, 67.1%) */
-
-    --warning: 45.9 96.7% 64.5%; /* hsl(45.9, 96.7%, 64.5%) */
-    --warning-foreground: 240 6% 10%; /* hsl(240, 6%, 10%) */
-    --warning-text: 0 0% 100%; /* hsl(0, 0%, 100%) */
-
-    --node-selected: 234 89% 74%;
-
-    --ice: #60a5fa;
-    --hover: #1a202e;
-    --disabled-run: #6366f1;
-    --selected: #0369a1;
-    --discord-color: #5765f2;
-
-    --filter-foreground: #eef2ff;
-    --filter-background: #4e46e599;
-
-    --round-btn-shadow: #00000063;
-
+    /* ── Functional colors (dark overrides) ── */
+    --error: #991b1b;
+    --error-background: #450a0a;
+    --error-foreground: #fef2f2;
+    --error-red: 0 75% 15%;
+    --error-red-border: 0 70% 35%;
     --success-background: #022c22;
     --success-foreground: #ecfdf5;
-
-    --error-foreground: #fef2f2;
-    --error-background: #450a0a;
-    --error: #991b1b;
-
-    --info-foreground: #eff6ff;
     --info-background: #172554;
+    --info-foreground: #eff6ff;
 
     --high-indigo: #4338ca;
     --medium-indigo: #6366f1;
     --low-indigo: #e0e7ff;
 
-    --component-icon: #c35f85;
-    --flow-icon: #2467e4;
-
-    --build-trigger: #dc735b;
-    --chat-trigger: #5c8be1;
-    --chat-trigger-disabled: #2d3b54;
-    --status-red: #ef4444;
-    --status-yellow: #eab308;
-    --chat-send: #ffffff;
-    --status-green: #4ade80;
-    --status-blue: #2563eb;
-    --connection: #6d6c6c;
-    --code-background: 240 6% 10%;
-    --code-description-background: 0 0% 0%;
-    --code-foreground: 240 6% 90%;
-
     --beta-background: rgb(37 99 235);
     --beta-foreground: rgb(219 234 254);
     --beta-foreground-soft: rgb(219 234 254);
 
-    --chat-bot-icon: #235d70;
-    --chat-user-icon: #4f3d6e;
+    --chat-bot-icon: #1e3a5f;
+    --chat-user-icon: #3730a3;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --placeholder: 240 5% 64.9%;
-    --hard-zinc: 240 5.2% 33.9%;
+    --component-icon: #60a5fa;
+    --flow-icon: #3b82f6;
+
+    --node-selected: 217 91% 60%;
+    --node-ring: 220 13% 87%;
+    --round-btn-shadow: #00000063;
+    --ice: #60a5fa;
+    --hover: #1e293b;
+    --disabled-run: #93c5fd;
+    --selected: #3b82f6;
+    --discord-color: #5765f2;
+    --filter-foreground: #eff6ff;
+    --filter-background: #1e40af99;
+
+    --build-trigger: #dc735b;
+    --chat-trigger: #3b82f6;
+    --chat-trigger-disabled: #1e3a5f;
+    --chat-send: #ffffff;
+    --status-red: #ef4444;
+    --status-yellow: #eab308;
+    --status-green: #4ade80;
+    --status-blue: #2563eb;
+    --connection: #6d6c6c;
+
+    --note-amber: 45.9 96.7% 64.5%;
+    --note-neutral: 215 12% 70%;
+    --note-rose: 352.6 95.7% 81.8%;
+    --note-blue: 211.7 96.4% 78.4%;
+    --note-lime: 82 84.5% 67.1%;
+    --warning: 45.9 96.7% 64.5%;
+    --warning-foreground: 220 47% 11%;
+    --warning-text: 0 0% 100%;
+
+    --code-background: 220 47% 11%;
+    --code-description-background: 0 0% 0%;
+    --code-foreground: 210 20% 98%;
+    --placeholder: 220 10% 64.9%;
+    --hard-zinc: 220 10% 40%;
     --smooth-red: 0 74.7% 15.5%;
+
+    /* Sidebar (shadcn-compat) */
+    --sidebar-background: 224 71.4% 4.1%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 215 27.9% 16.9%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 215 27.9% 16.9%;
+    --sidebar-ring: 217 91% 60%;
 
     --datatype-pink: 327.4 87.1% 81.8%;
     --datatype-pink-foreground: 333.3 71.4% 50.6%;
-
     --datatype-rose: 352.6 95.7% 81.8%;
     --datatype-rose-foreground: 346.8 77.2% 49.8%;
-
     --datatype-yellow: 50.4 97.8% 63.5%;
     --datatype-yellow-foreground: 40.6 96.1% 40.4%;
-
     --datatype-blue: 211.7 96.4% 78.4%;
     --datatype-blue-foreground: 221.2 83.2% 53.3%;
-
     --datatype-gray: 216 12.2% 83.9%;
     --datatype-gray-foreground: 215 13.8% 34.1%;
-
     --datatype-lime: 82 84.5% 67.1%;
     --datatype-lime-foreground: 84.8 85.2% 34.5%;
-
     --datatype-red: 0 93.5% 81.8%;
     --datatype-red-foreground: 0 72.2% 50.6%;
-
     --datatype-violet: 252.5 94.7% 85.1%;
     --datatype-violet-foreground: 262.1 83.3% 57.8%;
-
     --datatype-emerald: 156.2 71.6% 66.9%;
     --datatype-emerald-foreground: 161.4 93.5% 30.4%;
-
     --datatype-fuchsia: 291.1 93.1% 82.9%;
     --datatype-fuchsia-foreground: 293.4 69.5% 48.8%;
-
     --datatype-purple: 268.6 100% 91.8%;
     --datatype-purple-foreground: 272.1 71.7% 47.1%;
-
     --datatype-cyan: 187 92.4% 69%;
     --datatype-cyan-foreground: 191.6 91.4% 36.5%;
-
     --datatype-indigo: 229.7 93.5% 81.8%;
     --datatype-indigo-foreground: 243.4 75.4% 58.6%;
-
     --datatype-orange: 20.5 90.2% 48.2%;
     --datatype-orange-foreground: 30.7 97.2% 72.4%;
 
-    --node-ring: 240 6% 90%;
-
     --slider-input-border: #d4d4d8;
-
-    --zinc-foreground: 240 5.2% 33.9%;
-
-    --accent-amber: 22, 78%, 26%;
-    --accent-amber-foreground: 45.9 96.7% 64.5%;
-    --red-foreground: 0 72.2% 50.6%;
-    --indigo-foreground: 234.5 89.5% 73.9%;
+    --zinc-foreground: 220 10% 40%;
   }
 }
 
