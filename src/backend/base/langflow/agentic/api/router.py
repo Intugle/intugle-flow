@@ -1,6 +1,6 @@
-"""Langflow Assistant API router.
+"""Intugle Flow Assistant API router.
 
-This module provides the HTTP endpoints for the Langflow Assistant.
+This module provides the HTTP endpoints for the Intugle Flow Assistant.
 All business logic is delegated to service modules.
 """
 
@@ -199,7 +199,7 @@ async def check_assistant_config(
     current_user: CurrentActiveUser,
     session: DbSession,
 ) -> dict:
-    """Check if the Langflow Assistant is properly configured.
+    """Check if the Intugle Flow Assistant is properly configured.
 
     Returns available providers with their configured status and available models.
     """
@@ -288,7 +288,7 @@ async def assist(
     current_user: CurrentActiveUser,
     session: DbSession,
 ) -> dict:
-    """Chat with the Langflow Assistant."""
+    """Chat with the Intugle Flow Assistant."""
     await _validate_flow_access(request.flow_id, current_user.id, session)
     ctx = await _resolve_assistant_context(request, current_user.id, session)
 
@@ -314,7 +314,7 @@ async def assist_stream(
     current_user: CurrentActiveUser,
     session: DbSession,
 ) -> StreamingResponse:
-    """Chat with the Langflow Assistant with streaming progress updates."""
+    """Chat with the Intugle Flow Assistant with streaming progress updates."""
     await _validate_flow_access(request.flow_id, current_user.id, session)
     ctx = await _resolve_assistant_context(request, current_user.id, session)
 

@@ -124,7 +124,7 @@ async def test_update_tools_requires_user_for_agentic_server():
     config = {"mode": "Stdio", "command": "python", "args": ["-m", "langflow.agentic.mcp"]}
 
     with pytest.raises(ValueError, match="authenticated user"):
-        await update_tools("langflow-agentic", config, mcp_stdio_client=stdio_client)
+        await update_tools("intugle-flow-agentic", config, mcp_stdio_client=stdio_client)
 
     stdio_client.connect_to_server.assert_not_awaited()
 
@@ -137,7 +137,7 @@ async def test_update_tools_injects_bound_user_for_agentic_server():
     user_id = "11111111-1111-1111-1111-111111111111"
 
     await update_tools(
-        "langflow-agentic",
+        "intugle-flow-agentic",
         config,
         mcp_stdio_client=stdio_client,
         current_user_id=user_id,

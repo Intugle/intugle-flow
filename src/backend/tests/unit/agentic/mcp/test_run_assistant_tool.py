@@ -1,7 +1,7 @@
-"""The Langflow Assistant must be callable from external MCP clients.
+"""The Intugle Flow Assistant must be callable from external MCP clients.
 
 User report (Discord, 2026-06-11): "i can't call the assistant by mcp."
-Verified live (2026-06-12): the ``langflow-agentic`` MCP server exposes 18
+Verified live (2026-06-12): the ``intugle-flow-agentic`` MCP server exposes 18
 tools (templates, components, flow inspection) but none invokes the
 assistant; the assistant is HTTP-only.
 
@@ -39,7 +39,7 @@ EVENTS_WITH_FLOW = [
 
 EVENTS_TEXT_ONLY = [
     {"event": "progress", "step": "generating"},
-    {"event": "complete", "data": {"result": "Langflow is a visual flow builder."}},
+    {"event": "complete", "data": {"result": "Intugle Flow is a visual flow builder."}},
 ]
 
 INCREMENTAL_NODE_A = {"id": "ChatInput-abc", "data": {"id": "ChatInput-abc", "type": "ChatInput"}}
@@ -256,13 +256,13 @@ class TestRunAssistantAndPersist:
             result = await run_assistant_and_persist(
                 session=session,
                 user_id=user_id,
-                instruction="What is Langflow?",
+                instruction="What is Intugle Flow?",
                 flow_id=str(flow.id),
             )
 
         assert flow.data is original_data
         assert result["flow_changed"] is False
-        assert result["result"] == "Langflow is a visual flow builder."
+        assert result["result"] == "Intugle Flow is a visual flow builder."
 
     @pytest.mark.asyncio
     async def test_should_persist_canvas_when_agent_emits_incremental_events(self):
@@ -418,7 +418,7 @@ class TestRunAssistantAppliesProposedFieldEdits:
                 "action": "edit_field",
                 "component_id": "Agent-1",
                 "field": "system_prompt",
-                "old_value": "You are a Langflow Agent.",
+                "old_value": "You are an Intugle Flow Agent.",
                 "new_value": self.MARKER,
                 "patch": [
                     {
@@ -437,14 +437,14 @@ class TestRunAssistantAppliesProposedFieldEdits:
 
         user_id = uuid4()
         flow = SimpleNamespace(
-            id=uuid4(), name="My Flow", data=self._agent_data("You are a Langflow Agent."), user_id=user_id
+            id=uuid4(), name="My Flow", data=self._agent_data("You are an Intugle Flow Agent."), user_id=user_id
         )
         session = AsyncMock()
         session.get = AsyncMock(return_value=flow)
 
         # The working flow snapshot still holds the OLD prompt — the proposal was
         # never applied to it (the bug). The runner must apply the edit_field.
-        working_without_edit = {"data": self._agent_data("You are a Langflow Agent.")}
+        working_without_edit = {"data": self._agent_data("You are an Intugle Flow Agent.")}
 
         with (
             patch.object(
@@ -478,7 +478,7 @@ class TestRunAssistantAppliesProposedFieldEdits:
 
         user_id = uuid4()
         flow = SimpleNamespace(
-            id=uuid4(), name="My Flow", data=self._agent_data("You are a Langflow Agent."), user_id=user_id
+            id=uuid4(), name="My Flow", data=self._agent_data("You are an Intugle Flow Agent."), user_id=user_id
         )
         session = AsyncMock()
         session.get = AsyncMock(return_value=flow)

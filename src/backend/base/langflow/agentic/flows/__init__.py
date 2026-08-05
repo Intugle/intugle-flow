@@ -1,13 +1,13 @@
-"""Langflow Agentic Flows.
+"""Intugle Flow Agentic Flows.
 
-This package contains flow definitions for the Langflow Assistant feature.
+This package contains flow definitions for the Intugle Flow Assistant feature.
 
 Available flows:
 - translation_flow: Intent classification and translation flow (Python)
 - flow_builder_assistant: Flow building + sandboxed file I/O (Python). Handles
   both ``build_flow`` and ``manage_files`` intents; the FileSystemTool
   toolkit lets the agent write/edit documentation files when asked.
-- LangflowAssistant.json: Main assistant flow for Q&A and component generation (JSON)
+- IntugleFlowAssistant.json: Main assistant flow for Q&A and component generation (JSON)
 """
 
 from langflow.agentic.flows.flow_builder_assistant import get_graph as get_flow_builder_graph

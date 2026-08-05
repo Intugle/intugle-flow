@@ -49,7 +49,7 @@ from lfx.base.mcp.security import (
         ("npx", ["lfx"], {"NPM_CONFIG_REGISTRY": "https://attacker.invalid"}),
         ("npx", ["lfx"], {"npm_config_userconfig": "/tenant/npmrc"}),
         # A tenant cannot supply the agentic user-id binding env var (case-insensitive); only
-        # Langflow may inject it at spawn from the authenticated identity.
+        # Intugle Flow may inject it at spawn from the authenticated identity.
         ("python", ["-m", "langflow.agentic.mcp"], {"LANGFLOW_AGENTIC_USER_ID": "victim"}),
         ("uvx", ["x"], {"langflow_agentic_user_id": "victim"}),
         # Docker -- blocked even under the DEFAULT (lenient) policy.
@@ -276,7 +276,7 @@ async def test_update_tools_requires_user_for_agentic_server():
     stdio_client.connect_to_server = AsyncMock()
     config = {"mode": "Stdio", "command": "python", "args": ["-m", "langflow.agentic.mcp"]}
     with pytest.raises(ValueError, match="authenticated user"):
-        await update_tools("langflow-agentic", config, mcp_stdio_client=stdio_client)
+        await update_tools("intugle-flow-agentic", config, mcp_stdio_client=stdio_client)
     assert stdio_client.connect_to_server.call_count == 0
 
 
@@ -720,7 +720,7 @@ async def test_update_tools_injects_bound_user_for_agentic_server():
     config = {"mode": "Stdio", "command": "python", "args": ["-m", "langflow.agentic.mcp"]}
     user_id = "11111111-1111-1111-1111-111111111111"
 
-    await update_tools("langflow-agentic", config, mcp_stdio_client=stdio_client, current_user_id=user_id)
+    await update_tools("intugle-flow-agentic", config, mcp_stdio_client=stdio_client, current_user_id=user_id)
 
     stdio_client.connect_to_server.assert_awaited_once_with(
         "python -m langflow.agentic.mcp",

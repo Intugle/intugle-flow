@@ -1,4 +1,4 @@
-"""Entry point for running the Langflow Agentic MCP server.
+"""Entry point for running the Intugle Flow Agentic MCP server.
 
 This allows running the server with:
     python -m langflow.agentic.mcp

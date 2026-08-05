@@ -15,9 +15,9 @@ DANGEROUS_CALLS: dict[str, str] = {
     "compile": "Use of compile() is forbidden in components",
     "__import__": "Use of __import__() is forbidden in components",
     "globals": "Use of globals() is forbidden in components",
-    # Raw file access — components must use Langflow's File components,
+    # Raw file access — components must use Intugle Flow's File components,
     # not open arbitrary paths (e.g. /etc/passwd, SSH keys).
-    "open": "Use of open() is forbidden in components — use Langflow's File components",
+    "open": "Use of open() is forbidden in components — use Intugle Flow's File components",
     "breakpoint": "Use of breakpoint() is forbidden in components",
 }
 
@@ -39,16 +39,16 @@ DANGEROUS_DUNDER_ATTRS: set[str] = {
 
 # Non-call attribute *reads* that are forbidden: (module, attr, message).
 # Secret/env exfiltration is the concrete threat — components must use
-# Langflow's variable/secret service, never raw process env.
+# Intugle Flow's variable/secret service, never raw process env.
 DANGEROUS_ATTRIBUTE_READS: list[tuple[str, str, str]] = [
-    ("os", "environ", "os.environ is forbidden — use Langflow's variable/secret service"),
+    ("os", "environ", "os.environ is forbidden — use Intugle Flow's variable/secret service"),
     ("os.path", "os", "os.path.os is forbidden in components"),
     ("sys", "modules", "sys.modules is forbidden in components"),
 ]
 
 # Dangerous attribute calls: (module, method, violation_message)
 DANGEROUS_ATTR_CALLS: list[tuple[str, str, str]] = [
-    ("os", "system", "os.system() is forbidden — use Langflow's built-in integrations"),
+    ("os", "system", "os.system() is forbidden — use Intugle Flow's built-in integrations"),
     ("os", "popen", "os.popen() is forbidden"),
     ("os", "execl", "os.execl() is forbidden"),
     ("os", "execle", "os.execle() is forbidden"),
@@ -70,7 +70,7 @@ DANGEROUS_ATTR_CALLS: list[tuple[str, str, str]] = [
     # File-descriptor redirection wires a socket to a shell (reverse shell).
     ("os", "dup2", "os.dup2() is forbidden in components"),
     ("os", "dup", "os.dup() is forbidden in components"),
-    ("os", "getenv", "os.getenv() is forbidden — use Langflow's variable/secret service"),
+    ("os", "getenv", "os.getenv() is forbidden — use Intugle Flow's variable/secret service"),
     ("os", "putenv", "os.putenv() is forbidden in components"),
     ("shutil", "rmtree", "shutil.rmtree() is forbidden"),
     ("shutil", "move", "shutil.move() is forbidden in components"),
