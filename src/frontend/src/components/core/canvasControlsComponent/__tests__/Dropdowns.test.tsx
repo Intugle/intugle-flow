@@ -108,7 +108,7 @@ describe("HelpDropdown", () => {
     expect(mockNavigate).toHaveBeenCalledWith("/settings/shortcuts");
 
     fireEvent.click(
-      screen.getByTestId("canvas_controls_dropdown_get_langflow_desktop"),
+      screen.getByTestId("canvas_controls_dropdown_get_intugle_desktop"),
     );
     expect(window.open).toHaveBeenCalledWith(
       "https://desktop.langflow.org",

@@ -22,7 +22,7 @@ import { useAssistantChat, useEnabledModels, useSessionHistory } from "./hooks";
 // Module-level draft cache — survives panel unmount/remount
 let draftMessageCache = "";
 
-const PANEL_SIZE_KEY = "langflow-assistant-panel-size";
+const PANEL_SIZE_KEY = "intugle-assistant-panel-size";
 const MENTION_PANEL_HEIGHT = "26rem";
 const DEFAULT_SIZE = { width: 620, height: 600 };
 const MIN_SIZE = { width: 456, height: 400 };
@@ -180,7 +180,7 @@ export function AssistantPanel({ isOpen, onClose }: AssistantPanelProps) {
       return;
     let saved: AssistantModel | null = null;
     try {
-      const raw = localStorage.getItem("langflow-assistant-selected-model");
+      const raw = localStorage.getItem("intugle-assistant-selected-model");
       if (raw) {
         const parsed = JSON.parse(raw);
         if (parsed && parsed.provider && parsed.name) {
