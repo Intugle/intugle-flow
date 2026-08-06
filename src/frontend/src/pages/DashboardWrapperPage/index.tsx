@@ -16,7 +16,7 @@ export function DashboardWrapperPage() {
         currentFlow?.folder_id ? `project:${currentFlow.folder_id}` : undefined
       }
     >
-      <div className="flex h-screen w-full flex-col overflow-hidden">
+      <div className="flex h-screen w-full flex-col overflow-hidden bg-background">
         <AppHeader />
         <div className="flex w-full flex-1 flex-row overflow-hidden">
           <Outlet />
