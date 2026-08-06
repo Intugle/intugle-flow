@@ -9,6 +9,7 @@ import type { languageMap } from "../types/components";
 
 declare const __LANGFLOW_ACCESS_TOKEN_EXPIRE_SECONDS__: string | number;
 declare const __LANGFLOW_AUTO_LOGIN__: string | boolean;
+declare const __LANGFLOW_UNAUTHORIZED_REDIRECT_URL__: string;
 
 export const DEFAULT_SESSION_NAME = "Default Session";
 export const NEW_SESSION_NAME = "New Session";
@@ -764,7 +765,7 @@ export const MY_COLLECTION_DESC =
 export const STORE_DESC = "Explore community-shared flows and components.";
 export const STORE_TITLE = "Intugle Flow Store";
 export const NO_API_KEY = "You don't have an API key.";
-export const INSERT_API_KEY = "Insert your Intugle Flow API key.";
+export const INSERT_API_KEY = "Insert your Intugle Flow API key."; // pragma: allowlist secret
 export const INVALID_API_KEY = "Your API key is not valid. ";
 export const CREATE_API_KEY = `Don't have an API key? Sign up at`;
 export const STATUS_BUILD = "Build to validate status.";
@@ -978,6 +979,16 @@ const autoLoginEnv = getEnvVar<string | boolean>(
 );
 export const IS_AUTO_LOGIN =
   !autoLoginEnv || String(autoLoginEnv).toLowerCase() !== "false";
+
+// When an unrecoverable 401 (expired/invalid session) occurs, the frontend
+// redirects the whole page to this absolute URL instead of routing to /login.
+// Empty/unset preserves the legacy /login behavior. Populated at build time
+// from the LANGFLOW_UNAUTHORIZED_REDIRECT_URL env var.
+export const UNAUTHORIZED_REDIRECT_URL =
+  typeof __LANGFLOW_UNAUTHORIZED_REDIRECT_URL__ !== "undefined" &&
+  __LANGFLOW_UNAUTHORIZED_REDIRECT_URL__
+    ? String(__LANGFLOW_UNAUTHORIZED_REDIRECT_URL__)
+    : "";
 
 export const AUTO_LOGIN_RETRY_DELAY = 2000;
 export const AUTO_LOGIN_MAX_RETRY_DELAY = 60000;
