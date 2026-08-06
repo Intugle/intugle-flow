@@ -137,7 +137,7 @@ _DEFAULT_CHROMA_CLOUD_CONFIG = {
 
 
 class KnowledgeComponent(Component):
-    """One component for both writing into and reading from a Langflow knowledge base.
+    """One component for both writing into and reading from an Intugle Flow knowledge base.
 
     A ``TabInput`` switches between ingestion and retrieval. The
     ``update_build_config`` / ``update_outputs`` hooks hide the inputs
@@ -146,7 +146,7 @@ class KnowledgeComponent(Component):
     """
 
     display_name = "Knowledge"
-    description = "Ingest into or retrieve from a Langflow knowledge base."
+    description = "Ingest into or retrieve from an Intugle Flow knowledge base."
     icon = "database"
     name = "Knowledge"
 

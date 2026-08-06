@@ -3,7 +3,7 @@
   "id": "lfx-openai-compatible",
   "version": "0.1.0",
   "name": "OpenAI Compatible",
-  "description": "Generic OpenAI-compatible endpoints (OpenRouter, Together, Groq, self-hosted vLLM/TGI, ...) as a first-class Langflow model provider, packaged as a standalone Extension Bundle.",
+  "description": "Generic OpenAI-compatible endpoints (OpenRouter, Together, Groq, self-hosted vLLM/TGI, ...) as a first-class Intugle Flow model provider, packaged as a standalone Extension Bundle.",
   "lfx": {
     "compat": ["1"]
   },

@@ -3,7 +3,7 @@
   "id": "lfx-ibm",
   "version": "0.1.2",
   "name": "IBM",
-  "description": "IBM components (Db2 Vector Store + watsonx.ai LLM and embeddings) as a standalone Langflow Extension Bundle.",
+  "description": "IBM components (Db2 Vector Store + watsonx.ai LLM and embeddings) as a standalone Intugle Flow Extension Bundle.",
   "lfx": {
     "compat": ["1"]
   },

@@ -31,7 +31,7 @@ class KnowledgeIngestionComponent(KnowledgeComponent):
     """
 
     display_name = "Knowledge Ingestion"
-    description = "Create or update knowledge in Langflow."
+    description = "Create or update knowledge in Intugle Flow."
     icon = "upload"
     name = "KnowledgeIngestion"
     # Hidden from the default palette — surfaces only when a saved flow
