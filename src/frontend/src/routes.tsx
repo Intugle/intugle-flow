@@ -10,6 +10,7 @@ import { ProtectedRoute } from "./components/authorization/authGuard";
 import { ProtectedLoginRoute } from "./components/authorization/authLoginGuard";
 import { AuthSettingsGuard } from "./components/authorization/authSettingsGuard";
 import { PlaygroundAuthGate } from "./components/authorization/playgroundAuthGate";
+import { UnauthorizedRedirectGuard } from "./components/authorization/unauthorizedRedirectGuard";
 import ContextWrapper from "./contexts";
 import CustomDashboardWrapperPage from "./customization/components/custom-DashboardWrapperPage";
 import { CustomNavigate } from "./customization/components/custom-navigate";
@@ -199,7 +200,9 @@ const router = createBrowserRouter(
             path="login"
             element={
               <ProtectedLoginRoute>
-                <LoginPage />
+                <UnauthorizedRedirectGuard>
+                  <LoginPage />
+                </UnauthorizedRedirectGuard>
               </ProtectedLoginRoute>
             }
           />

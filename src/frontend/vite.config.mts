@@ -55,6 +55,9 @@ export default defineConfig(({ mode }) => {
       __LANGFLOW_AUTO_LOGIN__: JSON.stringify(
         envLangflow.LANGFLOW_AUTO_LOGIN ?? true,
       ),
+      __LANGFLOW_UNAUTHORIZED_REDIRECT_URL__: JSON.stringify(
+        envLangflow.LANGFLOW_UNAUTHORIZED_REDIRECT_URL ?? "",
+      ),
       "import.meta.env.LANGFLOW_MCP_COMPOSER_ENABLED": JSON.stringify(
         envLangflow.LANGFLOW_MCP_COMPOSER_ENABLED ?? "true",
       ),
