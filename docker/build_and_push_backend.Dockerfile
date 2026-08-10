@@ -31,6 +31,7 @@ RUN microdnf install -y tar xz \
 COPY ./src/backend ./src/backend
 COPY ./src/lfx ./src/lfx
 COPY ./src/sdk ./src/sdk
+COPY ./src/bundles ./src/bundles
 
 # Create venv and install langflow-base with dependencies
 # Using uv pip instead of uv sync to avoid workspace complexities
@@ -41,17 +42,36 @@ ENV BASH_ENV="" \
     PROMPT_COMMAND=""
 ENV VIRTUAL_ENV="/app/.venv"
 
-# Install langflow-base with all extras except dev (which includes Playwright).
-# This image ships the langflow-base core only.  Extension bundles
-# (lfx-duckduckgo, lfx-arxiv, lfx-ibm, lfx-docling, lfx-oracle, lfx-firecrawl) are intentionally NOT
-# installed here -- they belong to the full ``langflow`` distribution, not
-# the lean core.  Use the ``langflow`` image, or ``pip install`` the bundle
-# alongside this image, to add those components.
+# Install backend runtime with production parity for provider bundles.
+# This mirrors the top-level ``langflow`` package dependency shape used in
+# local installs: lfx-bundles[all-no-torch] plus the graduated standalone
+# lfx-* bundles.
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install \
         ./src/sdk \
         ./src/lfx \
-        "./src/backend/base[complete,postgresql]"
+        "./src/backend/base[complete,postgresql]" \
+        "./src/bundles/lfx-bundles[all-no-torch]" \
+        ./src/bundles/duckduckgo \
+        ./src/bundles/arxiv \
+        ./src/bundles/ibm \
+        ./src/bundles/docling \
+        ./src/bundles/datastax \
+        ./src/bundles/openai \
+        ./src/bundles/anthropic \
+        ./src/bundles/amazon \
+        ./src/bundles/cohere \
+        ./src/bundles/oracle \
+        ./src/bundles/firecrawl \
+        ./src/bundles/nextplaid \
+        ./src/bundles/paddle \
+        ./src/bundles/vllm \
+        ./src/bundles/empiriolabs \
+        ./src/bundles/openai-compatible \
+        ./src/bundles/exa \
+        ./src/bundles/valkey \
+        "mem0ai>=2.0.16,<3.0.0" \
+        "azure-identity>=1.25.3,<2.0.0"
 
 ################################
 # RUNTIME

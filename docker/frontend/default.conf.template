@@ -36,6 +36,12 @@ http {
             add_header Cache-Control "no-cache, no-store, must-revalidate";
             etag on;
         }
+        location = /runtime-config.js {
+            alias /tmp/nginx/runtime-config.js;
+            add_header Cache-Control "no-cache, no-store, must-revalidate";
+            expires -1;
+            etag off;
+        }
 
         location /api {
             proxy_pass ${BACKEND_URL};

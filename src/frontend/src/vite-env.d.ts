@@ -1,8 +1,6 @@
 /// <reference types="vite/client" />
 /// <reference types="vite-plugin-svgr/client" />
 
-// React 19 compatibility - JSX namespace is now exported from React
-import type { JSX } from "react";
 declare global {
   namespace JSX {
     interface Element extends React.JSX.Element {}
@@ -28,6 +26,12 @@ interface ImportMetaEnv {
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
+}
+
+interface Window {
+  __LANGFLOW_RUNTIME_CONFIG__?: {
+    LANGFLOW_UNAUTHORIZED_REDIRECT_URL?: string;
+  };
 }
 
 declare module "*.svg" {

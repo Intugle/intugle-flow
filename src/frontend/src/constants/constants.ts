@@ -11,6 +11,10 @@ declare const __LANGFLOW_ACCESS_TOKEN_EXPIRE_SECONDS__: string | number;
 declare const __LANGFLOW_AUTO_LOGIN__: string | boolean;
 declare const __LANGFLOW_UNAUTHORIZED_REDIRECT_URL__: string;
 
+type RuntimeLangflowConfig = {
+  LANGFLOW_UNAUTHORIZED_REDIRECT_URL?: string;
+};
+
 export const DEFAULT_SESSION_NAME = "Default Session";
 export const NEW_SESSION_NAME = "New Session";
 export const SLIDING_TRANSITION_MS = 300;
@@ -25,6 +29,17 @@ const getEnvVar = <T = string | undefined>(
       ? (process.env[key] as T | undefined)
       : undefined;
   return processValue ?? viteValue ?? defaultValue;
+};
+
+const getRuntimeLangflowConfig = (): RuntimeLangflowConfig | undefined => {
+  const runtimeConfig = (
+    globalThis as typeof globalThis & {
+      __LANGFLOW_RUNTIME_CONFIG__?: unknown;
+    }
+  ).__LANGFLOW_RUNTIME_CONFIG__;
+  return runtimeConfig && typeof runtimeConfig === "object"
+    ? (runtimeConfig as RuntimeLangflowConfig)
+    : undefined;
 };
 
 /**
@@ -984,11 +999,17 @@ export const IS_AUTO_LOGIN =
 // redirects the whole page to this absolute URL instead of routing to /login.
 // Empty/unset preserves the legacy /login behavior. Populated at build time
 // from the LANGFLOW_UNAUTHORIZED_REDIRECT_URL env var.
-export const UNAUTHORIZED_REDIRECT_URL =
+const runtimeUnauthorizedRedirectUrl =
+  getRuntimeLangflowConfig()?.LANGFLOW_UNAUTHORIZED_REDIRECT_URL;
+const viteUnauthorizedRedirectUrl =
   typeof __LANGFLOW_UNAUTHORIZED_REDIRECT_URL__ !== "undefined" &&
   __LANGFLOW_UNAUTHORIZED_REDIRECT_URL__
     ? String(__LANGFLOW_UNAUTHORIZED_REDIRECT_URL__)
     : "";
+export const UNAUTHORIZED_REDIRECT_URL =
+  typeof runtimeUnauthorizedRedirectUrl === "string"
+    ? runtimeUnauthorizedRedirectUrl
+    : viteUnauthorizedRedirectUrl;
 
 export const AUTO_LOGIN_RETRY_DELAY = 2000;
 export const AUTO_LOGIN_MAX_RETRY_DELAY = 60000;
