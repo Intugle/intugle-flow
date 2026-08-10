@@ -1,0 +1,3 @@
+window.__LANGFLOW_RUNTIME_CONFIG__ = Object.freeze({
+  LANGFLOW_UNAUTHORIZED_REDIRECT_URL: "",
+});
