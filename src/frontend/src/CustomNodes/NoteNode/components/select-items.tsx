@@ -5,6 +5,7 @@ import {
   SelectContentWithoutPortal,
   SelectItem,
 } from "@/components/ui/select-custom";
+import { ENABLE_DOCS } from "@/customization/feature-flags";
 import ToolbarSelectItem from "@/pages/FlowPage/components/nodeToolbarComponent/toolbarSelectItem";
 import type { NoteDataType } from "@/types/flow";
 
@@ -37,17 +38,19 @@ export const SelectItems = memo(
             dataTestId="copy-button-modal"
           />
         </SelectItem>
-        <SelectItem
-          value="documentation"
-          disabled={data.node?.documentation === ""}
-        >
-          <ToolbarSelectItem
-            shortcut={shortcuts.find((obj) => obj.name === "Docs")?.shortcut!}
-            value={t("nodeToolbar.docs")}
-            icon="FileText"
-            dataTestId="docs-button-modal"
-          />
-        </SelectItem>
+        {ENABLE_DOCS && (
+          <SelectItem
+            value="documentation"
+            disabled={data.node?.documentation === ""}
+          >
+            <ToolbarSelectItem
+              shortcut={shortcuts.find((obj) => obj.name === "Docs")?.shortcut!}
+              value={t("nodeToolbar.docs")}
+              icon="FileText"
+              dataTestId="docs-button-modal"
+            />
+          </SelectItem>
+        )}
         <SelectItem value="delete" className="focus:bg-destructive/[.20]">
           <div className="font-red flex text-status-red">
             <ForwardedIconComponent
