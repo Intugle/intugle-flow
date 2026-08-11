@@ -6,6 +6,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ENABLE_DOCS } from "@/customization/feature-flags";
 import DropdownControlButton from "./DropdownControlButton";
 
 export type HelpDropdownViewProps = {
@@ -54,13 +55,15 @@ export const HelpDropdownView = ({
         align="center"
         className="flex flex-col w-full"
       >
-        <DropdownControlButton
-          iconName="book-open"
-          testId="canvas_controls_dropdown_docs"
-          label={t("help.docs")}
-          externalLink
-          onClick={() => openLink(urls.docs)}
-        />
+        {ENABLE_DOCS && (
+          <DropdownControlButton
+            iconName="book-open"
+            testId="canvas_controls_dropdown_docs"
+            label={t("help.docs")}
+            externalLink
+            onClick={() => openLink(urls.docs)}
+          />
+        )}
         <DropdownControlButton
           iconName="keyboard"
           testId="canvas_controls_dropdown_shortcuts"
