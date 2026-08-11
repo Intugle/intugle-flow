@@ -70,6 +70,8 @@ RUN --mount=type=cache,target=/root/.cache/uv \
         ./src/bundles/openai-compatible \
         ./src/bundles/exa \
         ./src/bundles/valkey \
+        "plotly>=6.9.0" \
+        "kaleido>=1.3.0" \
         "mem0ai>=2.0.16,<3.0.0" \
         "azure-identity>=1.25.3,<2.0.0"
 
