@@ -18,6 +18,7 @@ export const ENABLE_MCP_NOTICE = false;
 export const ENABLE_KNOWLEDGE_BASES = true;
 export const ENABLE_INSPECTION_PANEL = true;
 export const ENABLE_DOCS = false;
+export const ENABLE_VERSION = false;
 
 export const ENABLE_MCP_COMPOSER =
   import.meta.env.LANGFLOW_MCP_COMPOSER_ENABLED === "true";

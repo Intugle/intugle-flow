@@ -28,6 +28,8 @@ jest.mock("@/customization/hooks/use-custom-navigate", () => ({
 
 jest.mock("@/customization/feature-flags", () => ({
   ENABLE_DATASTAX_LANGFLOW: false,
+  ENABLE_VERSION: false,
+  ENABLE_DOCS: false,
 }));
 
 jest.mock("@/stores/authStore", () => ({
@@ -97,5 +99,11 @@ describe("AccountMenu", () => {
     expect(
       screen.queryByRole("button", { name: /logout/i }),
     ).not.toBeInTheDocument();
+  });
+
+  it("does not render version button when ENABLE_VERSION is false", () => {
+    render(<AccountMenu />);
+
+    expect(screen.queryByTestId("menu_version_button")).not.toBeInTheDocument();
   });
 });

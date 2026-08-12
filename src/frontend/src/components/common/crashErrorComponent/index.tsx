@@ -28,8 +28,7 @@ export default function CrashErrorComponent({
             <CardContent className="grid">
               <div>
                 <p>
-                  {t("crash.descriptionBefore")}{" "}
-                  {t("crash.descriptionAfter")}
+                  {t("crash.descriptionBefore")} {t("crash.descriptionAfter")}
                   <br></br>
                   {t("crash.thankYou")}
                 </p>

@@ -9,32 +9,34 @@
   :root {
     /* ── Font families (§3.1) ── */
     --font-sans: "Inter", sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-mono:
+      "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      monospace;
     --font-display: "Raleway", sans-serif;
     --font-secondary: "Open Sans", sans-serif;
 
     /* ── Shadcn HSL tokens — light (§2.4) ── */
-    --background: 0 0% 100%;            /* #ffffff */
-    --foreground: 222 47% 11%;           /* #0f172a */
-    --card: 0 0% 100%;                   /* #ffffff */
+    --background: 0 0% 100%; /* #ffffff */
+    --foreground: 222 47% 11%; /* #0f172a */
+    --card: 0 0% 100%; /* #ffffff */
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 217 91% 60%;              /* #3b82f6 */
+    --primary: 217 91% 60%; /* #3b82f6 */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 221 83% 53%;        /* #2563eb */
-    --secondary: 210 15% 93%;            /* #e9eef2 */
+    --primary-hover: 221 83% 53%; /* #2563eb */
+    --secondary: 210 15% 93%; /* #e9eef2 */
     --secondary-foreground: 222 47% 11%;
     --secondary-hover: 210 15% 85%;
     --muted: 210 15% 93%;
-    --muted-foreground: 220 10% 45%;     /* #6b7280 approx */
+    --muted-foreground: 220 10% 45%; /* #6b7280 approx */
     --accent: 210 15% 90%;
     --accent-foreground: 222 47% 11%;
-    --destructive: 0 72% 51%;            /* #dc2626 */
+    --destructive: 0 72% 51%; /* #dc2626 */
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 87%;               /* #dde1e6 */
+    --border: 220 13% 87%; /* #dde1e6 */
     --input: 220 13% 87%;
-    --ring: 217 91% 60%;                 /* #3b82f6 */
+    --ring: 217 91% 60%; /* #3b82f6 */
     --radius: 0.5rem;
 
     /* ── Intugle theme tokens (§2.1-2.2) ── */
@@ -52,7 +54,9 @@
     --app-panel-bg: #ffffff;
     --app-glass-bg: rgba(255, 255, 255, 0.98);
     --app-glass-border: rgba(203, 213, 225, 0.8);
-    --app-glass-shadow: 0 8px 40px rgba(0,0,0,0.08), 0 0 1px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.9);
+    --app-glass-shadow:
+      0 8px 40px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.05), inset 0 1px 0
+      rgba(255, 255, 255, 0.9);
 
     /* ── Sidebar tokens (§7) ── */
     --sb-bg: #f8fafc;
@@ -78,9 +82,15 @@
 
     /* ── Elevation (§4.3) ── */
     --shadow-sm: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(222 47% 11% / 0.1), 0 2px 4px -2px hsl(222 47% 11% / 0.1);
-    --shadow-lg: 0 10px 15px -3px hsl(222 47% 11% / 0.1), 0 4px 6px -4px hsl(222 47% 11% / 0.1);
-    --shadow-xl: 0 20px 25px -5px hsl(222 47% 11% / 0.1), 0 8px 10px -6px hsl(222 47% 11% / 0.1);
+    --shadow-md:
+      0 4px 6px -1px hsl(222 47% 11% / 0.1), 0 2px 4px -2px
+      hsl(222 47% 11% / 0.1);
+    --shadow-lg:
+      0 10px 15px -3px hsl(222 47% 11% / 0.1), 0 4px 6px -4px
+      hsl(222 47% 11% / 0.1);
+    --shadow-xl:
+      0 20px 25px -5px hsl(222 47% 11% / 0.1), 0 8px 10px -6px
+      hsl(222 47% 11% / 0.1);
 
     /* ── Legacy shims (keep existing Tailwind color map working) ── */
     --placeholder-foreground: 220 10% 45%;
@@ -258,25 +268,25 @@
 
   .dark {
     /* ── Shadcn HSL tokens — dark (§2.4) ── */
-    --background: 224 71.4% 4.1%;       /* #0f172a */
-    --foreground: 210 20% 98%;           /* #cbd5e1 → #f1f5f9 */
-    --card: 224 71.4% 4.1%;              /* #0f172a */
+    --background: 224 71.4% 4.1%; /* #0f172a */
+    --foreground: 210 20% 98%; /* #cbd5e1 → #f1f5f9 */
+    --card: 224 71.4% 4.1%; /* #0f172a */
     --card-foreground: 210 20% 98%;
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
     --primary: 210 20% 98%;
     --primary-foreground: 220.9 39.3% 11%;
     --primary-hover: 210 20% 90%;
-    --secondary: 215 27.9% 16.9%;        /* #1e293b */
+    --secondary: 215 27.9% 16.9%; /* #1e293b */
     --secondary-foreground: 210 20% 98%;
     --secondary-hover: 215 27.9% 20%;
-    --muted: 215 27.9% 16.9%;            /* #1e293b */
+    --muted: 215 27.9% 16.9%; /* #1e293b */
     --muted-foreground: 217.9 10.6% 64.9%;
     --accent: 215 27.9% 16.9%;
     --accent-foreground: 210 20% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
-    --border: 215 27.9% 16.9%;           /* #334155 */
+    --border: 215 27.9% 16.9%; /* #334155 */
     --input: 215 27.9% 16.9%;
     --ring: 216 12.2% 83.9%;
 
@@ -295,7 +305,9 @@
     --app-panel-bg: rgba(12, 18, 34, 0.85);
     --app-glass-bg: rgba(10, 15, 28, 0.65);
     --app-glass-border: rgba(255, 255, 255, 0.1);
-    --app-glass-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.05);
+    --app-glass-shadow:
+      0 8px 40px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1), inset 0
+      1px 0 rgba(255, 255, 255, 0.05);
 
     /* ── Sidebar tokens (§7) ── */
     --sb-bg: #020617;
