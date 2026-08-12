@@ -18,7 +18,7 @@ interface AssistantLoadingStateProps {
 
 // Flow-build steps that have no body content (no streaming code, no card).
 // For those, the bordered card looks like an "empty" loading box, so we swap
-// it for a minimal draw-on animation of the Langflow assistant glyph.
+// it for a minimal draw-on animation of the Intugle icon glyph.
 const FLOW_BUILD_ICON_STEPS = new Set([
   "searching_components",
   "generating_plan",
@@ -29,16 +29,21 @@ const FLOW_BUILD_ICON_STEPS = new Set([
   "flow_built",
 ]);
 
-// SVG `d` of the three wavy strokes that form the Langflow assistant glyph,
-// in a 16x16 viewBox. Three sub-paths separated by `M` (moveto).
-const LANGFLOW_ASSISTANT_PATH_D =
-  "M2.1665 11.3333H3.83317L7.1665 8H8.83317L12.1665 4.66667H13.8332M7.1665 13H8.83317L12.1665 9.66667H13.8332M2.1665 6.33333H3.83317L7.1665 3H8.83317";
+// SVG `d` of the six wavy strokes that form the Intugle icon glyph, in a
+// 100x100 viewBox. Each stroke is its own sub-path (`d` string).
+const INTUGLE_ICON_PATHS: readonly string[] = [
+  "M34.5739 55.9804C34.8338 56.936 37.6656 66.7522 47.6645 70.4412C54.7825 73.0692 62.8561 71.5866 68.7515 66.6047",
+  "M77.2326 70.0969C75.7851 71.9519 71.014 77.5943 62.4767 79.878C54.0798 82.1265 47.2288 79.7375 45.0225 78.8662",
+  "M89.993 25.5128C80.7459 12.3379 65.0203 5.3253 49.2384 7.3419C32.1988 9.5131 18.3493 21.7887 13.7117 37.4089C7.71091 57.6176 17.8574 80.9882 38.3612 89.4413C56.518 96.932 78.0547 90.7553 90 74.3129",
+  "M76.7547 28.2884C64.4862 16.1252 45.2894 15.802 33.8289 26.0328C20.9982 37.4792 20.5204 59.7959 34.9883 72.8584",
+  "M57.8811 37.8165C52.3301 36.7484 46.8493 39.2007 44.411 43.6345C41.3896 49.1364 43.4976 56.8657 49.8075 60.4985",
+  "M38.9514 36.4252C40.0054 34.9847 43.5539 30.5017 50.0605 28.6537C57.5931 26.5176 63.7485 29.4407 65.1608 30.1574",
+];
 
 // Animation tuning constants.
-// Fallback path length used until `getTotalLength()` measures the real value
-// post-mount. Pre-measured for the current `d` to keep the first frame from
-// looking off; gets refined on the first render.
-const FALLBACK_PATH_LENGTH = 30;
+// All strokes are normalized to the same length via `pathLength`, so every
+// sub-path animates in lock-step regardless of its real geometry.
+const PATH_LENGTH = 100;
 // Duration of one full draw-fade cycle.
 const DRAW_DURATION_SECONDS = 2.4;
 // Keyframe percentages for the fill-up + hold + fade loop:
@@ -52,21 +57,6 @@ const KEYFRAME_FILLED_PERCENT = 65;
 const KEYFRAME_HOLD_END_PERCENT = 85;
 
 function LangflowDrawingIcon({ size = 24 }: { size?: number }) {
-  const pathRef = useRef<SVGPathElement>(null);
-  const [length, setLength] = useState(FALLBACK_PATH_LENGTH);
-
-  useEffect(() => {
-    // getTotalLength is a real SVGPathElement method but jsdom does not
-    // implement it (so unit tests would crash). Guard the call.
-    if (
-      pathRef.current &&
-      typeof pathRef.current.getTotalLength === "function"
-    ) {
-      const measured = pathRef.current.getTotalLength();
-      if (measured > 0) setLength(measured);
-    }
-  }, []);
-
   const animationName = "intugle-assistant-fill";
 
   return (
@@ -79,37 +69,57 @@ function LangflowDrawingIcon({ size = 24 }: { size?: number }) {
       <svg
         width={size}
         height={size}
-        viewBox="0 0 16 16"
+        viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <path
-          d={LANGFLOW_ASSISTANT_PATH_D}
-          stroke="currentColor"
-          strokeOpacity="0.18"
-          strokeWidth="1.11111"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="text-muted-foreground"
-        />
-        <path
-          ref={pathRef}
-          d={LANGFLOW_ASSISTANT_PATH_D}
-          stroke="hsl(var(--accent-assistant-brand))"
-          strokeWidth="1.11111"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{
-            strokeDasharray: length,
-            strokeDashoffset: length,
-            opacity: 0,
-            animation: `${animationName} ${DRAW_DURATION_SECONDS}s ease-out infinite`,
-          }}
-        />
+        <defs>
+          <linearGradient
+            id="intugle-assistant-gradient"
+            x1="52"
+            y1="5"
+            x2="52"
+            y2="95"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#7AB5FC" />
+            <stop offset="0.5" stopColor="#3073F0" />
+            <stop offset="1" stopColor="#1E3D9C" />
+          </linearGradient>
+        </defs>
+        {INTUGLE_ICON_PATHS.map((d, index) => (
+          <path
+            key={`base-${index}`}
+            d={d}
+            stroke="currentColor"
+            strokeOpacity="0.18"
+            strokeWidth="5"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
+            className="text-muted-foreground"
+          />
+        ))}
+        {INTUGLE_ICON_PATHS.map((d, index) => (
+          <path
+            key={`draw-${index}`}
+            d={d}
+            stroke="url(#intugle-assistant-gradient)"
+            strokeWidth="5"
+            strokeMiterlimit="10"
+            strokeLinecap="round"
+            pathLength={PATH_LENGTH}
+            style={{
+              strokeDasharray: PATH_LENGTH,
+              strokeDashoffset: PATH_LENGTH,
+              opacity: 0,
+              animation: `${animationName} ${DRAW_DURATION_SECONDS}s ease-out infinite`,
+            }}
+          />
+        ))}
       </svg>
       <style>{`
         @keyframes ${animationName} {
-          0%                                  { stroke-dashoffset: ${length}; opacity: 0; }
+          0%                                  { stroke-dashoffset: ${PATH_LENGTH}; opacity: 0; }
           ${KEYFRAME_FADE_IN_PERCENT}%       { opacity: 1; }
           ${KEYFRAME_FILLED_PERCENT}%        { stroke-dashoffset: 0; opacity: 1; }
           ${KEYFRAME_HOLD_END_PERCENT}%      { stroke-dashoffset: 0; opacity: 1; }
