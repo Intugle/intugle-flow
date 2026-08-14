@@ -16,10 +16,6 @@ jest.mock("@/components/common/modelProviderCountComponent", () => ({
   __esModule: true,
   default: () => null,
 }));
-jest.mock("@/customization/components/custom-AccountMenu", () => ({
-  __esModule: true,
-  default: () => null,
-}));
 jest.mock("@/customization/components/custom-langflow-counts", () => ({
   __esModule: true,
   default: () => null,
@@ -67,6 +63,19 @@ describe("AppHeader accessibility", () => {
 
     expect(screen.getByTestId("notification_button")).toHaveAttribute(
       "aria-label",
+    );
+  });
+
+  it("should_name_theme_and_settings_buttons", () => {
+    renderHeader();
+
+    expect(screen.getByTestId("theme_button")).toHaveAttribute(
+      "aria-label",
+      "Theme",
+    );
+    expect(screen.getByTestId("settings_button")).toHaveAttribute(
+      "aria-label",
+      "Settings",
     );
   });
 
