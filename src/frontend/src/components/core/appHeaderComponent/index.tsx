@@ -7,7 +7,6 @@ import ModelProviderCount from "@/components/common/modelProviderCountComponent"
 import ShadTooltip from "@/components/common/shadTooltipComponent";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import CustomAccountMenu from "@/customization/components/custom-AccountMenu";
 import CustomLangflowCounts from "@/customization/components/custom-langflow-counts";
 import { CustomOrgSelector } from "@/customization/components/custom-org-selector";
 import { useCustomNavigate } from "@/customization/hooks/use-custom-navigate";
@@ -22,7 +21,7 @@ export default function AppHeader(): JSX.Element {
   const [activeState, setActiveState] = useState<"notifications" | null>(null);
   const notificationRef = useRef<HTMLButtonElement | null>(null);
   const notificationContentRef = useRef<HTMLDivElement | null>(null);
-  useTheme();
+  const { dark, setThemePreference } = useTheme();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -126,9 +125,39 @@ export default function AppHeader(): JSX.Element {
           className="my-auto h-7 dark:border-border"
         />
 
-        <div className="flex">
-          <CustomAccountMenu />
-        </div>
+        <ShadTooltip content={t("account.theme")} side="bottom">
+          <Button
+            unstyled
+            aria-label={t("account.theme")}
+            aria-pressed={dark}
+            onClick={() => setThemePreference(dark ? "light" : "dark")}
+            data-testid="theme_button"
+          >
+            <div className="hit-area-hover group relative items-center rounded-md px-2 py-2 text-muted-foreground">
+              <ForwardedIconComponent
+                name={dark ? "Sun" : "Moon"}
+                className="side-bar-button-size h-4 w-4 text-muted-foreground group-hover:text-primary"
+                strokeWidth={2}
+              />
+            </div>
+          </Button>
+        </ShadTooltip>
+        <ShadTooltip content={t("account.settings")} side="bottom">
+          <Button
+            unstyled
+            aria-label={t("account.settings")}
+            onClick={() => navigate("/settings")}
+            data-testid="settings_button"
+          >
+            <div className="hit-area-hover group relative items-center rounded-md px-2 py-2 text-muted-foreground">
+              <ForwardedIconComponent
+                name="Settings"
+                className="side-bar-button-size h-4 w-4 text-muted-foreground group-hover:text-primary"
+                strokeWidth={2}
+              />
+            </div>
+          </Button>
+        </ShadTooltip>
       </div>
     </header>
   );
