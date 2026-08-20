@@ -45,6 +45,7 @@ describe("AppHeader accessibility", () => {
 
     expect(screen.getByTestId("app-header")).toBeInTheDocument();
     expect(screen.getByTestId("notification_button")).toBeInTheDocument();
+    expect(screen.getByTestId("header-beta-badge")).toHaveTextContent("Beta");
   });
 
   // Known gap (a11y-action-plan 3.3): the app header is a plain <div>, so

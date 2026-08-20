@@ -5,6 +5,7 @@ import IntugleIcon from "@/assets/IntugleIcon.svg?react";
 import ForwardedIconComponent from "@/components/common/genericIconComponent";
 import ModelProviderCount from "@/components/common/modelProviderCountComponent";
 import ShadTooltip from "@/components/common/shadTooltipComponent";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import CustomLangflowCounts from "@/customization/components/custom-langflow-counts";
@@ -67,6 +68,14 @@ export default function AppHeader(): JSX.Element {
         >
           <IntugleIcon className="h-5 w-5" aria-hidden="true" />
         </Button>
+        <Badge
+          variant="purpleStatic"
+          size="tag"
+          className="shrink-0 uppercase"
+          data-testid="header-beta-badge"
+        >
+          Beta
+        </Badge>
         <CustomOrgSelector />
       </div>
 
