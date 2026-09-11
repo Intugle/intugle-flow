@@ -25,8 +25,17 @@ LABEL org.opencontainers.image.licenses=MIT
 LABEL org.opencontainers.image.url=https://github.com/langflow-ai/langflow
 LABEL org.opencontainers.image.source=https://github.com/langflow-ai/langflow
 
-COPY --from=builder-base --chown=nginx /frontend/build /usr/share/nginx/html
-COPY --chown=nginx ./docker/frontend/start-nginx.sh /start-nginx.sh
-COPY --chown=nginx ./docker/frontend/default.conf.template /etc/nginx/conf.d/default.conf.template
+USER root
+
+RUN groupadd --gid 10000 langflow \
+    && useradd --uid 10000 --gid langflow --create-home --shell /usr/sbin/nologin langflow
+
+COPY --from=builder-base --chown=langflow:langflow /frontend/build /usr/share/nginx/html
+COPY --chown=langflow:langflow ./docker/frontend/start-nginx.sh /start-nginx.sh
+COPY --chown=langflow:langflow ./docker/frontend/default.conf.template /etc/nginx/conf.d/default.conf.template
+
 RUN chmod +x /start-nginx.sh
+
+USER 10000:10000
+
 ENTRYPOINT ["/start-nginx.sh"]

@@ -6,12 +6,11 @@ http {
     include /etc/nginx/mime.types;
     default_type text/plain;
     client_max_body_size ${LANGFLOW_MAX_FILE_SIZE_UPLOAD}M;
-
-    types {
-        text/html html;
-        text/css css;
-        application/javascript js;
-    }
+    client_body_temp_path /tmp/nginx/client_temp;
+    proxy_temp_path /tmp/nginx/proxy_temp;
+    fastcgi_temp_path /tmp/nginx/fastcgi_temp;
+    scgi_temp_path /tmp/nginx/scgi_temp;
+    uwsgi_temp_path /tmp/nginx/uwsgi_temp;
 
     server {
         gzip on;
