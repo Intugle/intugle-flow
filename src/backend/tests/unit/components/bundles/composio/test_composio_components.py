@@ -252,3 +252,24 @@ class TestComposioBuildConfigHydration:
 
         assert build_config["format"]["value"] == "html"
         assert build_config["format"]["show"] is True
+
+    def test_restore_selected_action_keeps_complete_optional_field_configuration(self):
+        component = self._component()
+        component._actions_data["GMAIL_SEND_EMAIL"]["action_fields"].append("format")
+        component._all_fields = {"subject", "format"}
+
+        build_config = self._build_config()
+        build_config["action_button"]["options"] = [{"name": "Send Email"}]
+        build_config["format"] = {
+            "value": "html",
+            "options": ["text", "html"],
+            "advanced": True,
+            "show": True,
+        }
+
+        with patch.object(component, "_update_action_config") as update_action_config:
+            component._restore_selected_action_config(build_config)
+
+        update_action_config.assert_not_called()
+        assert build_config["format"]["value"] == "html"
+        assert build_config["format"]["options"] == ["text", "html"]
