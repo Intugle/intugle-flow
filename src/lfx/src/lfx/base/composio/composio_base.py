@@ -1126,7 +1126,10 @@ class ComposioBaseComponent(Component):
             self._hide_all_action_fields(build_config)
             return
 
-        self._update_action_config(build_config, selected_value)
+        action_key = self.desanitize_action_name(selected_name)
+        action_fields = self._get_action_fields(action_key)
+        if not action_fields or not action_fields.issubset(build_config):
+            self._update_action_config(build_config, selected_value)
         self.show_hide_fields(build_config, selected_value)
 
     def create_new_auth_config(self, app_name: str) -> str:
