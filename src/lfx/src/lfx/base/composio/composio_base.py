@@ -1044,12 +1044,13 @@ class ComposioBaseComponent(Component):
     def _remove_inputs_from_build_config(self, build_config: dict, keep_for_action: str) -> None:
         """Remove parameter UI fields that belong to other actions."""
         protected_keys = {"code", "entity_id", "api_key", "auth_link", "action_button", "tool_mode"}
+        kept_input_names = {inp.name for inp in self._validate_schema_inputs(keep_for_action) if inp.name is not None}
 
         for action_key, lf_inputs in self._get_inputs_for_all_actions().items():
             if action_key == keep_for_action:
                 continue
             for inp in lf_inputs:
-                if inp.name is not None and inp.name not in protected_keys:
+                if inp.name is not None and inp.name not in protected_keys | kept_input_names:
                     build_config.pop(inp.name, None)
 
     def _update_action_config(self, build_config: dict, selected_value: Any) -> None:
@@ -1083,10 +1084,11 @@ class ComposioBaseComponent(Component):
                 # Do not mutate input_types here; keep original configuration
 
                 inp_dict.setdefault("show", True)  # visible once action selected
-                # Preserve previously entered value if user already filled something
+                # Schema refreshes must not overwrite persisted user input.
                 if inp.name in build_config:
                     existing_val = build_config[inp.name].get("value")
-                    inp_dict.setdefault("value", existing_val)
+                    if existing_val is not None:
+                        inp_dict["value"] = existing_val
                 build_config[inp.name] = inp_dict
 
         # Ensure _all_fields includes new ones
@@ -1106,6 +1108,26 @@ class ComposioBaseComponent(Component):
         else:
             # When tool_mode is enabled, hide action field
             build_config["action_button"]["show"] = not self._is_tool_mode_enabled()
+
+    def _restore_selected_action_config(self, build_config: dict) -> None:
+        """Restore saved action fields after action metadata is refreshed."""
+        selected_value = build_config.get("action_button", {}).get("value")
+        if not selected_value or selected_value == "disabled":
+            return
+
+        if isinstance(selected_value, list):
+            selected_name = selected_value[0].get("name") if selected_value else None
+        else:
+            selected_name = selected_value
+
+        available_actions = {option["name"] for option in build_config["action_button"].get("options", [])}
+        if selected_name not in available_actions:
+            build_config["action_button"]["value"] = "disabled"
+            self._hide_all_action_fields(build_config)
+            return
+
+        self._update_action_config(build_config, selected_value)
+        self.show_hide_fields(build_config, selected_value)
 
     def create_new_auth_config(self, app_name: str) -> str:
         """Create a new auth config for the given app name."""
@@ -1545,6 +1567,9 @@ class ComposioBaseComponent(Component):
         # CRITICAL: Ensure dynamic action metadata is available whenever we have an API key
         # This must happen BEFORE any early returns to ensure tools are always loaded
         api_key_available = hasattr(self, "api_key") and self.api_key
+        api_key_changed = (
+            field_name == "api_key" and bool(field_value) and field_value != getattr(self, "api_key", None)
+        )
 
         # Check if we need to populate actions - but also check cache availability
         actions_available = bool(self._actions_data)
@@ -1596,12 +1621,15 @@ class ComposioBaseComponent(Component):
             schema = self._get_toolkit_schema()
             modes = self._extract_auth_modes_from_schema(schema)
             self._render_auth_mode_dropdown(build_config, modes)
+            if field_name == "api_key" and field_value:
+                self._restore_selected_action_config(build_config)
         else:
             build_config["action_button"]["options"] = []
             logger.warning("No actions found, setting empty options")
 
-        # clear stored connection_id when api_key is changed
-        if field_name == "api_key" and field_value:
+        # A flow reload replays the saved API key through this callback. Only
+        # invalidate authentication state when the credential actually changed.
+        if api_key_changed:
             stored_connection_before = build_config.get("auth_link", {}).get("connection_id")
             if "auth_link" in build_config and "connection_id" in build_config["auth_link"]:
                 build_config["auth_link"].pop("connection_id", None)
@@ -1638,14 +1666,6 @@ class ComposioBaseComponent(Component):
                 build_config["auth_mode"] = dd
             except (TypeError, ValueError, AttributeError):
                 pass
-            # NEW: Clear any selected action and hide generated fields when API key is re-entered
-            try:
-                if "action_button" in build_config and isinstance(build_config["action_button"], dict):
-                    build_config["action_button"]["value"] = "disabled"
-                self._hide_all_action_fields(build_config)
-            except (TypeError, ValueError, AttributeError):
-                pass
-
         # Handle disconnect operations when tool mode is enabled
         if field_name == "auth_link" and field_value == "disconnect":
             # Soft disconnect: do not delete remote account; only clear local state

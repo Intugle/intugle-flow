@@ -5,6 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from lfx.base.composio.composio_base import ComposioBaseComponent
+from lfx.inputs.inputs import DropdownInput, StrInput
 from lfx.schema.data import Data
 from lfx.schema.message import Message
 from lfx_bundles.composio.composio_api import ComposioAPIComponent
@@ -142,3 +143,112 @@ class TestExecuteActionRichTypeCoercion:
         # body contains JSON-like text — should be passed as a string (schema type is str)
         args = self._run({"subject": "hi", "body": Message(text='{"key": "val"}')})
         assert args["body"] == '{"key": "val"}'
+
+
+@pytest.mark.unit
+class TestComposioBuildConfigHydration:
+    """Regression coverage for restoring saved dedicated Composio component state."""
+
+    @staticmethod
+    def _component() -> ComposioBaseComponent:
+        component = ComposioBaseComponent(api_key="saved-key")
+        component.app_name = "gmail"
+        component._actions_data = {
+            "GMAIL_SEND_EMAIL": {
+                "display_name": "Send Email",
+                "action_fields": ["subject"],
+            }
+        }
+        component._display_to_key_map = {"Send Email": "GMAIL_SEND_EMAIL"}
+        component._key_to_display_map = {"GMAIL_SEND_EMAIL": "Send Email"}
+        return component
+
+    @staticmethod
+    def _build_config() -> dict:
+        return {
+            "api_key": {"value": "saved-key"},
+            "auth_link": {
+                "connection_id": "existing-connection",
+                "value": "validated",
+                "auth_scheme": "OAUTH2",
+            },
+            "auth_mode": {"value": "OAUTH2", "show": True},
+            "action_button": {
+                "value": [{"name": "Send Email"}],
+                "options": [],
+                "show": True,
+            },
+            "subject": {"value": "Saved subject", "show": True},
+        }
+
+    def test_api_key_hydration_preserves_connection_and_action(self):
+        component = self._component()
+        build_config = self._build_config()
+
+        with (
+            patch.object(component, "_get_toolkit_schema", return_value={}),
+            patch.object(component, "_render_auth_mode_dropdown"),
+            patch.object(component, "_restore_selected_action_config") as restore_action,
+            patch.object(component, "_check_connection_status_by_id", return_value="ACTIVE"),
+            patch.object(component, "_get_connection_auth_info", return_value=("OAUTH2", True)),
+        ):
+            component.update_build_config(build_config, "saved-key", "api_key")
+
+        assert build_config["auth_link"]["connection_id"] == "existing-connection"
+        assert build_config["auth_link"]["value"] == "validated"
+        assert build_config["auth_mode"]["value"] == "OAUTH2"
+        assert build_config["action_button"]["value"] == [{"name": "Send Email"}]
+        restore_action.assert_called_once_with(build_config)
+
+    def test_api_key_change_invalidates_connection(self):
+        component = self._component()
+        build_config = self._build_config()
+
+        with (
+            patch.object(component, "_get_toolkit_schema", return_value={}),
+            patch.object(component, "_render_auth_mode_dropdown"),
+            patch.object(component, "_restore_selected_action_config"),
+            patch.object(component, "_find_active_connection_for_app", return_value=None),
+        ):
+            component.update_build_config(build_config, "new-key", "api_key")
+
+        assert "connection_id" not in build_config["auth_link"]
+        assert build_config["auth_link"]["value"] == "connect"
+
+    def test_restore_selected_action_preserves_dynamic_field_values(self):
+        component = self._component()
+        build_config = self._build_config()
+        build_config["action_button"]["options"] = [{"name": "Send Email"}]
+
+        with patch.object(
+            component,
+            "_validate_schema_inputs",
+            return_value=[StrInput(name="subject", display_name="Subject", value="")],
+        ):
+            component._restore_selected_action_config(build_config)
+
+        assert build_config["subject"]["value"] == "Saved subject"
+        assert build_config["subject"]["show"] is True
+
+    def test_restore_selected_action_preserves_shared_dynamic_field_values(self):
+        component = self._component()
+        component._actions_data["GMAIL_SEND_EMAIL"]["action_fields"].append("format")
+        component._actions_data["GMAIL_CREATE_DRAFT"] = {
+            "display_name": "Create Draft",
+            "action_fields": ["format"],
+        }
+        component._display_to_key_map["Create Draft"] = "GMAIL_CREATE_DRAFT"
+        component._key_to_display_map["GMAIL_CREATE_DRAFT"] = "Create Draft"
+
+        build_config = self._build_config()
+        build_config["action_button"]["options"] = [{"name": "Send Email"}, {"name": "Create Draft"}]
+        build_config["format"] = {"value": "html", "show": True}
+
+        def action_inputs(_action_key: str):
+            return [DropdownInput(name="format", display_name="Format", options=["text", "html"], value="text")]
+
+        with patch.object(component, "_validate_schema_inputs", side_effect=action_inputs):
+            component._restore_selected_action_config(build_config)
+
+        assert build_config["format"]["value"] == "html"
+        assert build_config["format"]["show"] is True
