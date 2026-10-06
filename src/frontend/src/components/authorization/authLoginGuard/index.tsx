@@ -1,5 +1,8 @@
 import { CustomNavigate } from "@/customization/components/custom-navigate";
-import { consumeRedirectUrl } from "@/hooks/use-sanitize-redirect-url";
+import {
+  consumeRedirectUrl,
+  isSafeRedirectUrl,
+} from "@/hooks/use-sanitize-redirect-url";
 import useAuthStore from "@/stores/authStore";
 
 export const ProtectedLoginRoute = ({ children }) => {
@@ -8,7 +11,8 @@ export const ProtectedLoginRoute = ({ children }) => {
 
   if (autoLogin === true || isAuthenticated) {
     const urlParams = new URLSearchParams(window.location.search);
-    const redirectPath = urlParams.get("redirect") || consumeRedirectUrl();
+    const rawRedirect = urlParams.get("redirect") || consumeRedirectUrl();
+    const redirectPath = isSafeRedirectUrl(rawRedirect) ? rawRedirect : null;
 
     if (redirectPath) {
       return <CustomNavigate to={redirectPath} replace />;
