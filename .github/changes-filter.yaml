@@ -25,8 +25,6 @@ frontend:
   - "**/lint-js.yml"
   - ".github/workflows/ci.yml"
   - "src/lfx/src/lfx/_assets/component_index.json"
-docs:
-  - "docs/**"
 docker:
   - "docker/**"
   - "uv.lock"

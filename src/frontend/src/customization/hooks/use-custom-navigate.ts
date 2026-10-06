@@ -15,11 +15,18 @@ export function useCustomNavigate(): NavigateFunction {
   function navigate(to: To | number, options?: NavigateOptions) {
     if (typeof to === "number") {
       domNavigate(to);
-    } else {
+    } else if (typeof to === "string") {
+      // Disallow unsafe paths with leading backslashes or protocol-relative prefixes
+      if (to.startsWith("\\") || to.startsWith("//") || to.startsWith("/\\")) {
+        console.warn("Blocked potentially unsafe navigation:", to);
+        return;
+      }
       domNavigate(
         ENABLE_CUSTOM_PARAM && to[0] === "/" ? `/${customParam}${to}` : to,
         options,
       );
+    } else {
+      domNavigate(to, options);
     }
   }
 

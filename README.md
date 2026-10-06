@@ -1,8 +1,8 @@
 <!-- markdownlint-disable MD030 -->
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="./docs/static/img/langflow-logo-color-blue-bg.svg">
-  <img src="./docs/static/img/langflow-logo-color-black-solid.svg" alt="Langflow logo">
+  <source media="(prefers-color-scheme: dark)" srcset="./branding/langflow-logo-color-blue-bg.svg">
+  <img src="./branding/langflow-logo-color-black-solid.svg" alt="Langflow logo">
 </picture>
 
 [![Release Notes](https://img.shields.io/github/release/langflow-ai/langflow?style=flat-square)](https://github.com/langflow-ai/langflow/releases)
