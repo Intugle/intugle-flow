@@ -2,7 +2,7 @@
 name = "langflow"
 version = "1.11.0"
 description = "A Python package with a built-in web application"
-requires-python = ">=3.10,<3.15"
+requires-python = ">=3.11,<3.15"
 license = "MIT"
 keywords = ["nlp", "langchain", "openai", "gpt", "gui"]
 readme = "README.md"
@@ -220,11 +220,11 @@ override-dependencies = [
     # Security: Force upgraded versions to prevent transitive deps from pulling older vulnerable versions
     "orjson>=3.11.6",
     "gunicorn>=25.3.0",
-    "pypdf>=6.19.0",  # Force pypdf 6.19+ to prevent vulnerable versions
-    "nltk>=3.10.3",
+    "pypdf>=6.21.4,<7.0.0",  # CVE-2026-113786, CVE-2026-113789 through CVE-2026-119209
+    "nltk>=3.10.4",  # CVE-2026-81726, GHSA-j456-xh4h-cpf2
     "Markdown>=3.8.0",
     "dynaconf>=3.2.13",
-    "pillow>=12.1.1",  # Force Pillow 12.1.1+ to prevent CVE-vulnerable versions
+    "pillow>=13.0.0",  # CVE-2026 Pillow advisories, GHSA-78g4-xqwv-q3g8
     "playwright>=1.59.0",  # Latest available on PyPI; ensures updated Chromium with CVE fixes
     # Keep uv workspace resolution on the Python 3.14-compatible LiteLLM floor.
     "litellm>=1.93.0,<2.0.0",
@@ -235,6 +235,29 @@ override-dependencies = [
     "python-liquid>=2.2.0,<3.0.0",  # CVE-2026-45017
     "GitPython>=3.1.62",
     "pyjwt>=2.14.0",
+    # Trivy vulnerability remediation for transitive dependencies.
+    "aiohttp>=3.14.4",
+    "authlib>=1.9.1",
+    "black>=26.10.1",
+    "brotli>=1.2.1",
+    "brotlicffi>=1.2.1.0",
+    "certifi>=2026.10.18",
+    "datamodel-code-generator>=0.81.0",
+    "dnspython>=2.9.0",
+    "fastmcp>=3.4.10",
+    "fastmcp-slim>=3.4.10",
+    "filelock>=4.0.9",
+    "gitpython>=3.2.1",
+    "joserfc>=1.7.6",
+    "langgraph>=1.2.14",
+    "langgraph-sdk>=0.4.6",
+    "mcp>=1.30.0,<2.0.0",
+    "mem0ai>=2.0.18",
+    "oauthlib>=4.0.1",
+    "opentelemetry-api>=1.45.1",
+    "pyasn1>=0.6.5",
+    "pymongo>=4.18.3",
+    "setuptools>=84.1.0",
 ]
 
 [project.scripts]
