@@ -18,6 +18,9 @@
     "jest-message-util": {
       "picomatch": "^4.0.4"
     },
+    "jest-config": {
+      "deepmerge": "4.1.2"
+    },
     "jest-junit": {
       "uuid": "^11.1.0"
     },
