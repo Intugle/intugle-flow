@@ -82,6 +82,7 @@ dev = [
     "codeflash>=0.8.4",
     "hypothesis>=6.123.17",
     "locust~=2.43.4",
+    "msgpack>=1.2.3",
     "pytest-rerunfailures>=15.0",
     "scrapegraph-py>=1.10.2",
     'elevenlabs==1.58.1; python_version == "3.12"',
@@ -258,6 +259,9 @@ override-dependencies = [
     "pyasn1>=0.6.5",
     "pymongo>=4.18.3",
     "setuptools>=84.1.0",
+    "tornado>=6.6,<7.0",  # CVE-2026-115927, CVE-2026-116577, CVE-2026-116578
+    "virtualenv==21.14.7",  # CVE-2026-113725
+    "packaging==26.3",  # Required by virtualenv 21.14.7
 ]
 
 [project.scripts]
